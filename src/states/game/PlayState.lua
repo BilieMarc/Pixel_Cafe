@@ -5,7 +5,11 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
-
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        -- End PlayState and enters DayEndState
+        gStateStack:pop()
+        gStateStack:push(DayEndState())
+    end
 end
 
 function PlayState:render()

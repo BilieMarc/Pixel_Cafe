@@ -12,9 +12,17 @@ function love.load()
         resizable = false
     })
 
+-- start the game with StartMenu 
     gStateStack = StateStack()
-    gStateStack:push(PlayState())
+    gStateStack:push(StartMenu())
+
+    --gStateStack = StateStack()
+    --gStateStack:push(PlayState())
     love.keyboard.keysPressed = {}
+
+-- added a font for temporary (https://www.fontspace.com/category/pixel)
+    PixelFont = love.graphics.newFont('FortAvenue-nAWrg.ttf', 16)
+
 end
 
 function love.update(dt)

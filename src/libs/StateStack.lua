@@ -13,11 +13,17 @@ function StateStack:init()
 end
 
 function StateStack:update(dt)
-    self.states[#self.states]:update(dt)
+    -- Guard against empty stack to avoid nil state access when no states remain.
+    if #self.states > 0 then
+        self.states[#self.states]:update(dt)
+    end
 end
 
 function StateStack:processAI(params, dt)
-    self.states[#self.states]:processAI(params, dt)
+    -- Only process AI on the active state and only if it defines processAI.
+    if #self.states > 0 and self.states[#self.states].processAI then
+        self.states[#self.states]:processAI(params, dt)
+    end
 end
 
 function StateStack:render()
@@ -36,6 +42,9 @@ function StateStack:push(state)
 end
 
 function StateStack:pop()
-    self.states[#self.states]:exit()
-    table.remove(self.states)
+    -- Safely remove the current state if the stack is not empty.
+    if #self.states > 0 then
+        self.states[#self.states]:exit()
+        table.remove(self.states)
+    end
 end
