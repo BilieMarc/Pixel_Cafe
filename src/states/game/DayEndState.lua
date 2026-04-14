@@ -5,9 +5,11 @@ end
 
 function DayEndState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        -- End the DayEndState and return to the StartMenu
+        -- End the DayEndState and return to the PlayState (morning)
         gStateStack:pop()
-        gStateStack:push(StartMenu())
+        local playState = PlayState()
+        playState:enterParams({timeOfDay = 8})
+        gStateStack:push(playState)
     end
 end
 
