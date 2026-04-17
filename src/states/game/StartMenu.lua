@@ -7,7 +7,9 @@ function StartMenu:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- End StartMenu and enters PlayState
         gStateStack:pop()
-        gStateStack:push(PlayState())
+        local playState = PlayState()
+        playState:enterParams({timeOfDay = 8})
+        gStateStack:push(playState)
     end
 end
 

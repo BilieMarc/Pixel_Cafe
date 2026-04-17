@@ -17,6 +17,7 @@ gFrames = {
 }
 
 require('src.states.BaseState')
+require('src.states.entity.CustomerState')
 require('src.states.game.PlayState')
 require('src.states.game.StartMenu')
 require('src.states.game.DayEndState')
