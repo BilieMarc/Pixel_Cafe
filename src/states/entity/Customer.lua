@@ -1,0 +1,1 @@
+Customer = class {__includes = BaseState}

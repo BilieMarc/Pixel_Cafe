@@ -20,9 +20,6 @@ function love.load()
     --gStateStack:push(PlayState())
     love.keyboard.keysPressed = {}
 
--- added a font for temporary (https://www.fontspace.com/category/pixel)
-    PixelFont = love.graphics.newFont('FortAvenue-nAWrg.ttf', 16)
-
 end
 
 function love.update(dt)

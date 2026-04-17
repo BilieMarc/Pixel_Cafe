@@ -8,7 +8,18 @@ _G.suit = require('src.libs.SUIT')
 
 require('src.constants')
 
+gFonts = {
+    ['pixel'] = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 16),
+}
+
+gFrames = {
+    ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.jpg')
+}
+
 require('src.states.BaseState')
 require('src.states.game.PlayState')
 require('src.states.game.StartMenu')
 require('src.states.game.DayEndState')
+
+require('src.states.entity.CoffeeMachine')
+require('src.states.entity.Customer')
