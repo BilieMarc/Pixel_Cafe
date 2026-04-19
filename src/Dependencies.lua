@@ -21,6 +21,7 @@ gFrames = {
 
 require('src.constants')
 
+require('src.TimeManager')
 
 require('src.states.BaseState')
 require('src.states.game.PlayState')

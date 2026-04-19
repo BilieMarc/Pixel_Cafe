@@ -1,11 +1,7 @@
 PlayState = class {__includes = BaseState}
 
 function PlayState:init()
-    -- Default to start hour 8 (8:00 AM)
-    self.dayTime = 8 * 60
-    
-    -- 1 real second = 15 game minutes
-    self.timeScale = 15
+    self.timeManager = TimeManager()
 
     self.customerStates = {
         CustomerState(CUSTOMER_ENTITIES['left']),
@@ -32,14 +28,7 @@ function PlayState:update(dt)
     end
     
     -- Update timer
-    self.dayTime = self.dayTime + self.timeScale * dt
-    local currentHour = math.floor(self.dayTime / 60)
-    
-    -- Night time transition (8:00 PM / 20 hours)
-    if currentHour >= 20 then
-        gStateStack:clear()
-        gStateStack:push(DayEndState())
-    end
+    self.timeManager:update(dt)
 
     if love.mouse.wasPressed(1) then
         if mouseX > self.coffeeMachine.x and mouseX < self.coffeeMachine.x + self.coffeeMachine.desired_width and
@@ -71,24 +60,7 @@ function PlayState:render()
     love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20, VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)
     
-    -- Timer UI
-    local hours = math.floor(self.dayTime / 60)
-    local minutes = math.floor(self.dayTime % 60)
-    
-    local period = "A.M."
-    local displayHour = hours % 24
-    if displayHour >= 12 then
-        period = "P.M."
-    end
-    
-    displayHour = displayHour % 12
-    if displayHour == 0 then
-        displayHour = 12
-    end
-    
-    local timeString = string.format("%02d:%02d %s", displayHour, minutes, period)
-    love.graphics.setFont(gFonts['medium'])
-    love.graphics.print(timeString, VIRTUAL_WIDTH - 90, 2)
+    self.timeManager:render()
 end
 
 function PlayState:isOverCustomer()

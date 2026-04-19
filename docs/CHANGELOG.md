@@ -20,3 +20,8 @@
 - Move the require of constants below gFonts and gFrames in Dependencies.
 - In main file, functions for mouse operations are added. And mx and my are changed from local to global with mouseX and mouseY.
 - Added PauseMenu. click p to enter pausemenu and then enter to exit pausemenu. For future use, the state stack is modified to house both play state and pause menu simutaneously.
+
+### v0.3.0 - 2026-04-20
+- Extracted time management and tracking logic from PlayState into a new dedicated TimeManager class.
+- Stabilized the timer UI by separating the digital clock values from the AM/PM period strings with absolute coordinates to prevent shifting.
+- Modified the time UI to only visually update every 15 in-game minutes, making the time cleanly skip steps while maintaining exact continuous time underneath.
