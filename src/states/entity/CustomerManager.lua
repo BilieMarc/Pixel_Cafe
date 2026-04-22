@@ -2,7 +2,7 @@
 -- Handles customer spawning (with timer), slot assignment, and cleanup.
 -- Lives inside PlayState; update() is called each frame by PlayState:update().
 
-CustomerManager = class{}
+CustomerManager = class{__includes = BaseState}
 
 function CustomerManager:init()
     self.customers     = {}   -- list of active CustomerState objects
@@ -37,6 +37,10 @@ function CustomerManager:update(dt)
             table.remove(self.customers, i)
         end
     end
+
+    for _, c in ipairs(self.customers) do
+        c:update(dt)
+    end
 end
 
 function CustomerManager:spawnCustomer()
@@ -46,7 +50,7 @@ function CustomerManager:spawnCustomer()
     local customer = CustomerState({
         slotIndex = slot.index,
         slot      = slot,
-        orderType = 'Coffee',
+        --orderType = 'Coffee',
     })
 
     self.occupiedSlots[slot.index] = true
@@ -77,4 +81,10 @@ function CustomerManager:getOccupiedSlotCount()
         if self.occupiedSlots[i] then n = n + 1 end
     end
     return n
+end
+
+function CustomerManager:render()
+    for _, c in ipairs(self.customers) do
+        c:render()
+    end
 end

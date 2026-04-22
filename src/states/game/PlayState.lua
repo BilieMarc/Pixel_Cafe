@@ -1,16 +1,21 @@
 PlayState = class {__includes = BaseState}
 
 function PlayState:init()
-    -- Default start: 8:00 AM
-    self.dayTime  = 8 * 60
-    self.timeScale = 15   -- 1 real second = 15 game minutes
+    self.timeManager = TimeManager()
 
-    -- Customer system
-    self.customerManager = CustomerManager()
-
-    -- Core entities (NOT on the state stack — PlayState owns update/render)
     self.coffeeMachine = CoffeeMachine(COFFEE_MACHINE_ENTITY)
     self.cursor        = Cursor()
+    self.customerManager = CustomerManager()
+    self.timeManager = TimeManager()
+
+    self.interactables = {
+        self.coffeeMachine
+    }
+
+    gStateStack:push(self.timeManager)
+    gStateStack:push(self.customerManager)
+    gStateStack:push(self.coffeeMachine)
+    gStateStack:push(self.cursor)
 
     -- Economy
     self.totalMoney   = 0
@@ -26,22 +31,6 @@ function PlayState:update(dt)
         gStateStack:push(PauseMenu())
     end
 
-    -- Day timer
-    self.dayTime = self.dayTime + self.timeScale * dt
-    if math.floor(self.dayTime / 60) >= 20 then
-        gStateStack:clear()
-        gStateStack:push(DayEndState())
-    end
-
-    -- Update subsystems (none of these are on the state stack)
-    self.coffeeMachine:update(dt)
-    self.cursor:update(dt)
-    self.customerManager:update(dt)
-
-    for _, customer in ipairs(self.customerManager:getAllCustomers()) do
-        customer:update(dt)
-    end
-
     -- Floating money cleanup
     for i = #self.floatingMoney, 1, -1 do
         local m = self.floatingMoney[i]
@@ -54,18 +43,24 @@ function PlayState:update(dt)
     -- ── Mouse interactions ────────────────────────────────────────────────────
     -- Begin drag from coffee machine
     if love.mouse.wasPressed(1) then
-        local cm = self.coffeeMachine
-        if mouseX > cm.x and mouseX < cm.x + cm.desired_width and
-           mouseY > cm.y and mouseY < cm.y + cm.desired_height then
-            self.cursor:isDragged()
+        local target = self:getInteractAt()
+
+        if target then
+            target:onPressed()
+
+            if target.productionStage == 'Ready' then
+                self.cursor:isDragged(target)
+            end
         end
     end
 
     -- Release: try to deliver to a customer
     if love.mouse.wasReleased(1) and self.cursor.isDragging then
-        local hit = self:getCustomerAtMouse()
-        if hit then
-            self:deliverCoffee(hit)
+        local target = self:getInteractAt()
+
+        if target and target.type == 'CustomerState' and target.orderBox then
+            self:deliverItem(target)
+            self.coffeeMachine:taken()
         end
         self.cursor:isReleased()
     end
@@ -87,64 +82,47 @@ function PlayState:render()
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20,
                             VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)
 
-    -- 2. HUD — time
-    local hours      = math.floor(self.dayTime / 60)
-    local minutes    = math.floor(self.dayTime % 60)
-    local period     = hours % 24 >= 12 and 'P.M.' or 'A.M.'
-    local displayH   = hours % 12
-    if displayH == 0 then displayH = 12 end
-    local timeString = string.format('%02d:%02d %s', displayH, minutes, period)
-    love.graphics.setFont(gFonts['medium'])
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print(timeString, 10, 2)
-
     -- HUD — money
     love.graphics.setColor(0.2, 0.8, 0.2, 1)
-    love.graphics.print(string.format('$%.2f', self.totalMoney), VIRTUAL_WIDTH - 60, 2)
+    love.graphics.setFont(gFonts['medium'])
+    love.graphics.print(string.format('$%.2f', self.totalMoney), VIRTUAL_WIDTH - 150, 2)
 
-    -- HUD — customer count
+    --[[ HUD — customer count
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print(
         string.format('In Cafe: %d/%d',
             self.customerManager:getOccupiedSlotCount(), #WAITING_SLOTS),
-        10, 15)
-
-    -- 3. Customers (behind counter)
-    for _, customer in ipairs(self.customerManager:getAllCustomers()) do
-        customer:render()
-    end
-
-    -- 4. Coffee machine (counter — draws over bottom of customer sprites)
-    self.coffeeMachine:render()
+        10, 15)]]
 
     -- 5. Floating money
     for _, m in ipairs(self.floatingMoney) do
         m:render()
     end
-
-    -- 6. Cursor — rendered absolutely last so it is always on top
-    self.cursor:render()
 end
 
 -- ─── Helper functions ─────────────────────────────────────────────────────────
 
 -- Returns the first WAITING customer under the mouse cursor, or nil.
-function PlayState:getCustomerAtMouse()
-    for _, c in ipairs(self.customerManager:getAllCustomers()) do
-        if c.state == 'waiting' and c.orderBox and c.orderBox.isActive then
-            if mouseX > c.x and mouseX < c.x + c.desired_width and
-               mouseY > c.y and mouseY < c.y + c.desired_height then
-                return c
-            end
+function PlayState:getInteractAt()
+    self:getInteractables()
+    for _, c in ipairs(self.interactables) do
+        if c:isMouseOver() then
+            return c
         end
     end
     return nil
 end
 
--- Attempt to deliver coffee to the given customer.
-function PlayState:deliverCoffee(customer)
-    local success = customer:receiveItem('Coffee')
+function PlayState:getInteractables()
+    for _, i in ipairs(self.customerManager:getAllCustomers()) do
+        table.insert(self.interactables, i)
+    end
+end
+
+-- Attempt to deliver an item to the given customer.
+function PlayState:deliverItem(customer)
+    local success = customer:receiveItem(self.cursor.heldItem)
     if success then
         self:spawnFloatingMoney(customer)
     end

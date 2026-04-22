@@ -2,14 +2,13 @@
 -- Renders the speech-bubble order box above a customer and manages patience.
 -- Owned by CustomerState; update() must be called each frame from updateWaiting().
 
-OrderBox = class{__includes = BaseState}
+OrderBox = class{__includes = BaseEntity}
 
 function OrderBox:init(params)
-    params = params or {}
+    BaseEntity.init(self, params)
 
-    -- Link to owning customer
-    self.customer  = params.customer
-    self.orderType = params.orderType or 'Coffee'
+    self.orderType = AVAILABLE_ITEMS[math.random(#AVAILABLE_ITEMS)]
+    self.order = ORDER_TYPES[self.orderType]
 
     -- Visual size and offset relative to customer
     self.width   = 34
@@ -45,11 +44,11 @@ function OrderBox:render()
     local boxY = self.customer.y + self.offsetY
 
     -- White box
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(gColors['white'])
     love.graphics.rectangle('fill', boxX, boxY, self.width, self.height)
 
     -- Black border
-    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.setColor(gColors['black'])
     love.graphics.setLineWidth(1)
     love.graphics.rectangle('line', boxX, boxY, self.width, self.height)
 
@@ -64,20 +63,20 @@ function OrderBox:render()
     local barX   = boxX + 2
     local barY   = boxY + self.height - 6
 
-    love.graphics.setColor(0.3, 0.3, 0.3, 1)
+    love.graphics.setColor(gColors['gray'])
     love.graphics.rectangle('fill', barX, barY, barW, barH)
 
     -- Patience bar foreground (green / yellow / red)
     if pct > 0.5 then
-        love.graphics.setColor(0.2, 0.8, 0.2, 1)
+        love.graphics.setColor(gColors['green'])
     elseif pct > 0.25 then
-        love.graphics.setColor(1.0, 0.8, 0.2, 1)
+        love.graphics.setColor(gColors['yellow'])
     else
-        love.graphics.setColor(0.8, 0.2, 0.2, 1)
+        love.graphics.setColor(gColors['red'])
     end
     love.graphics.rectangle('fill', barX, barY, barW * pct, barH)
 
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(gColors['white'])
 end
 
 function OrderBox:getPatience()

@@ -1,15 +1,8 @@
--- CustomerState.lua
--- State-driven customer lifecycle: MOVING_IN -> WAITING -> PAYING -> LEAVING -> DONE
--- Managed and updated/rendered directly by PlayState via CustomerManager.
-
-CustomerState = class{__includes = BaseState}
+CustomerState = class{__includes = BaseEntity}
 
 function CustomerState:init(params)
-    params = params or {}
-    for k, v in pairs(params) do
-        self[k] = v
-    end
-
+    BaseEntity.init(self, params)
+    self.type = 'CustomerState'
     -- Appearance
     local frameIndex  = math.random(#gFrames.customers)
     self.frame        = gFrames.customers[frameIndex]
@@ -27,8 +20,8 @@ function CustomerState:init(params)
     self.stateTimer = 0
 
     -- Order
-    self.orderType = params.orderType or 'Coffee'
-    self.order     = ORDER_TYPES[self.orderType]   -- {price, name}
+    --self.orderType = params.orderType or 'Coffee'
+    --self.order     = ORDER_TYPES[self.orderType]   -- {price, name}
     self.orderBox  = nil
 
     -- Payment
@@ -69,7 +62,7 @@ function CustomerState:updateWaiting(dt)
 
     -- Create order box on first frame of waiting
     if not self.orderBox then
-        self.orderBox = OrderBox({customer = self, orderType = self.orderType})
+        self.orderBox = OrderBox({customer = self})
     end
 
     -- Tick the order box (patience decay + impatient-leave trigger)
@@ -98,13 +91,12 @@ end
 -- ─── Render ───────────────────────────────────────────────────────────────────
 
 function CustomerState:render()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(
-        self.frame, self.x, self.y, 0,
-        self.desired_width  / self.frame:getWidth(),
-        self.desired_height / self.frame:getHeight()
-    )
+    BaseEntity.render(self)
 
+     -- Optional: render order box (only while waiting)
+     if self.state == 'waiting' and self.orderBox and self.orderBox.isActive then
+        self.orderBox:render()
+    end
     -- Render order box while waiting (box manages its own isActive flag)
     if self.orderBox and self.orderBox.isActive then
         self.orderBox:render()
@@ -122,7 +114,7 @@ end
 -- Strict check: itemType must match self.orderType (string comparison).
 function CustomerState:receiveItem(itemType)
     if self.state ~= 'waiting' then return false end
-    if itemType ~= self.orderType then return false end     -- wrong item
+    if itemType ~= self.orderBox.orderType then return false end     -- wrong item
 
     -- Capture patience at payment time for tip calculation
     if self.orderBox then
@@ -132,10 +124,10 @@ function CustomerState:receiveItem(itemType)
 
     -- Calculate total payment: base price + patience-scaled tip
     local patiencePct  = self.patienceAtPayment / CUSTOMER_CONFIG.patienceMax
-    local baseTip      = self.order.price * CUSTOMER_CONFIG.baseTip
-    local patienceTip  = self.order.price * CUSTOMER_CONFIG.patienceBonus * patiencePct
+    local baseTip      = self.orderBox.order.price * CUSTOMER_CONFIG.baseTip
+    local patienceTip  = self.orderBox.order.price * CUSTOMER_CONFIG.patienceBonus * patiencePct
     local tipTotal     = baseTip + patienceTip
-    self.totalPayment  = self.order.price + tipTotal
+    self.totalPayment  = self.orderBox.order.price + tipTotal
 
     self:setState('paying')
     return true
@@ -149,6 +141,6 @@ function CustomerState:leaveImpatient()
 end
 
 function CustomerState:getPaymentAmount()  return self.totalPayment end
-function CustomerState:getTipAmount()      return self.totalPayment - self.order.price end
+function CustomerState:getTipAmount()      return self.totalPayment - self.orderBox.order.price end
 function CustomerState:didLeaveImpatient() return self.leftImpatient end
 function CustomerState:getSlotIndex()      return self.slotIndex end

@@ -2,6 +2,8 @@ Cursor = class {__includes = BaseState}
 
 function Cursor:init()
     self.isDragging = false
+    self.heldItem = nil
+    self.type = Cursor
 end
 
 function Cursor:update(dt)
@@ -19,10 +21,14 @@ function Cursor:render()
     end
 end
 
-function Cursor:isDragged()
+function Cursor:isDragged(item)
     self.isDragging = true
+    if item.type == 'CoffeeMachine' then
+        self.heldItem = 'Coffee'
+    end
 end
 
 function Cursor:isReleased()
     self.isDragging = false
+    self.heldItem = nil
 end

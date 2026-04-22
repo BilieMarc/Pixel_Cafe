@@ -21,7 +21,21 @@
 - In main file, functions for mouse operations are added. And mx and my are changed from local to global with mouseX and mouseY.
 - Added PauseMenu. click p to enter pausemenu and then enter to exit pausemenu. For future use, the state stack is modified to house both play state and pause menu simutaneously.
 
-### v0.3.0 - 2026-04-22
+### v0.3.0 - 2026-04-20
+- Extracted time management and tracking logic from PlayState into a new dedicated TimeManager class.
+- Stabilized the timer UI by separating the digital clock values from the AM/PM period strings with absolute coordinates to prevent shifting.
+- Modified the time UI to only visually update every 15 in-game minutes, making the time cleanly skip steps while maintaining exact continuous time underneath.
+
+### v0.4.0 - 2026-04-21
+- In playstate, previous mouse check mechanic is now replaced with a universal one which doesn't need adding more lines. By using interactables table and getInteractableAt function, just adding other interactable entities at the table is all it takes now.
+- Separate the condition checking for click and drag so that condition checkings can be reduced further down the line.
+- Now all the entities include property type.
+- Add a new file to handle basic functions of entities which include initiating a parameter, rendering, mouse check and mouse response.
+- Unlike the issue requirement, the circle doesn't disappear with time but drawn. Color is set to a desired color and then reset to white to avoid impacting other entities.
+- gColors is built with nine colors to faciliate the use of colors in the future.
+- A decision is registered.
+
+### v0.5.0 - 2026-04-22
 - **constants.lua**: Replaced static `CUSTOMER_ENTITIES` table with `WAITING_SLOTS` (three x,y counter positions), `ENTRANCE_X`, and `EXIT_X` for linear customer movement. Added `CUSTOMER_CONFIG` (moveSpeed, spawnInterval, patienceMax, patienceDecayRate, baseTip, patienceBonus) and `ORDER_TYPES` table for order pricing.
 - **CustomerState.lua**: Full rewrite into a state-driven lifecycle: `MOVING_IN → WAITING → PAYING → LEAVING → DONE`. Customers walk from `ENTRANCE_X` to an assigned slot, wait with an order box, briefly pause in a PAYING state upon receiving their order, then walk to `EXIT_X`. `receiveItem(itemType)` performs a strict string comparison against `self.orderType`. Payment includes a patience-scaled tip.
 - **OrderBox.lua**: Created as a separate entity owned by `CustomerState`. Renders a white box with the order label and a colour-coded patience bar (green → yellow → red). Patience decays at `CUSTOMER_CONFIG.patienceDecayRate` per second; hitting 0 triggers `customer:leaveImpatient()`. Box size reduced to 34×26 after initial size was too large.
