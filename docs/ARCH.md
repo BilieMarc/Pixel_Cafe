@@ -24,8 +24,10 @@ src/states
 src/states/game
 - PlayState.lua 
 - DayEndState.lua
+- PauseMenu.lua
 - StartMenu.lua
 src/states/entity
+- BaseEntity.lua
 - CoffeeMachine.lua
 - Cursor.lua
 - CustomerState.lua

@@ -27,6 +27,7 @@ require('src.states.game.StartMenu')
 require('src.states.game.DayEndState')
 require('src.states.game.PauseMenu')
 
+require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
 require('src.states.entity.CustomerState')
 require('src.states.entity.Cursor')
