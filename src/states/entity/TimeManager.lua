@@ -1,4 +1,4 @@
-TimeManager = class{}
+TimeManager = class{__includes = BaseState}
 
 function TimeManager:init()
     -- Default to start hour 8 (8:00 AM)

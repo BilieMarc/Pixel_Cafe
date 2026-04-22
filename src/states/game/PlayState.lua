@@ -18,6 +18,7 @@ function PlayState:init()
     gStateStack:push(self.customerStates[3])
     gStateStack:push(self.coffeeMachine)
     gStateStack:push(self.cursor)
+    gStateStack:push(self.timeManager)
 end
 
 function PlayState:update(dt)
@@ -26,9 +27,6 @@ function PlayState:update(dt)
         gStateStack:pause()
         gStateStack:push(PauseMenu())
     end
-    
-    -- Update timer
-    self.timeManager:update(dt)
 
     if love.mouse.wasPressed(1) then
         if mouseX > self.coffeeMachine.x and mouseX < self.coffeeMachine.x + self.coffeeMachine.desired_width and
@@ -59,8 +57,6 @@ end
 function PlayState:render()
     love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20, VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)
-    
-    self.timeManager:render()
 end
 
 function PlayState:isOverCustomer()
