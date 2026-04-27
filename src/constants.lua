@@ -11,26 +11,6 @@ COFFEE_MACHINE_ENTITY = {
     desired_height = 32,
 }
 
---[[CUSTOMER_ENTITIES = {
-    ['left'] = {
-        x = 10,
-        y = 25,
-        desired_width = 64,
-        desired_height = 64,
-    },
-    ['center'] = {
-        x = 110,
-        y = 25,
-        desired_width = 64,
-        desired_height = 64,
-    },
-    ['right'] = {
-        x = 210,
-        y = 25,
-        desired_width = 64,
-        desired_height = 64,
-    },
-}]]
 -- Customer waiting positions at the counter (slots).
 -- y=55: sprite is 64px tall, bottom edge = y=119, clears counter at y=130.
 WAITING_SLOTS = {
@@ -72,4 +52,55 @@ gColors = {
     ['purple'] = {0.5, 0.2, 0.5, 1},
     ['orange'] = {1, 0.5, 0, 1},
     ['gray'] = {0.5, 0.5, 0.5, 1},
+}
+
+BUTTON_PARAMS = {
+    ['Play'] = {
+        text = 'Play',
+        x = VIRTUAL_WIDTH / 2 - 16,
+        y = VIRTUAL_HEIGHT / 2 - 16,
+        desired_width = 32,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:push(PlayState())
+        end,
+        clickable = true
+    },
+    ['Pause'] = {
+        text = '=',
+        x = 5,
+        y = 5,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            gStateStack:pause()
+            gStateStack:push(PauseMenu())
+        end,
+        clickable = true
+    },
+    ['Resume'] = {
+        text = '>',
+        x = 5,
+        y = 5,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:resume()
+        end,
+        clickable = true,
+    },
+    ['NextDay'] = {
+        text = 'Next Day',
+        x = VIRTUAL_WIDTH / 2 - 24,
+        y = VIRTUAL_HEIGHT / 2 - 16,
+        desired_width = 48,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:push(PlayState())
+        end,
+        clickable = true,
+    }
 }
