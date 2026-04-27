@@ -67,6 +67,15 @@ function PlayState:update(dt)
     self:mouseResponse()
 end
 
+-- ─── Render ───────────────────────────────────────────────────────────────────
+-- Render order (back → front):
+--   1. Background outlines
+--   2. HUD (time, money, customer count)
+--   3. Customers           ← behind the counter
+--   4. Coffee machine      ← counter, in front of customers
+--   5. Floating money
+--   6. Cursor              ← always on top
+
 function PlayState:render()
     -- 1. Background outlines
     love.graphics.setColor(1, 1, 1, 1)
