@@ -44,3 +44,10 @@
 - **PlayState.lua**: Major refactor. Replaced manual three-customer array with `CustomerManager`. All entities (`coffeeMachine`, `cursor`, customers) are now updated and rendered directly by `PlayState` rather than via `gStateStack`, eliminating double-update and double-render bugs. Render order is strictly back-to-front: background → customers → coffee machine (counter occludes customer bottom) → floating money → cursor. Money HUD added (top-right, green). Customer count HUD added (top-left, small font). `deliverCoffee()` and `spawnFloatingMoney()` helpers extracted for clarity.
 - **Cursor.lua**: Cursor circle now draws with an explicit amber colour `(0.85, 0.55, 0.1)` and a dark outline, so it is always visible regardless of what the previous render call set. Cursor is rendered as the absolute last draw call in `PlayState:render()`, guaranteeing it appears on top of all other entities including customers and the coffee machine.
 - **Dependencies.lua**: Added `require` entries for `CustomerManager`, `OrderBox`, and `FloatingMoney`.
+
+### v0.6.0 - 2026-04-27
+- Button enitity is added.
+- It needs text, x, y, desired_width, desired_height, action and clickable parameters.
+- When hovering, the color of the box will be yellow and for unclickable the color is gray hover or not. By default it is white.
+- Moved mouse related logic including the loops in update function and getInteractAt function and getInteractables function in PlayState into BaseState.lua so that all the game states can share it.
+- Just by calling self:mouseResponse() in an update function, we can now use it in any and all game states with the requirements being that state having self.interactables property and the button instance is pushed to gStateStack.

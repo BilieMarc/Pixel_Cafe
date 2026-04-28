@@ -1,20 +1,25 @@
 PlayState = class {__includes = BaseState}
 
 function PlayState:init()
+    self.type = 'PlayState'
+
     self.timeManager = TimeManager()
 
     self.coffeeMachine = CoffeeMachine(COFFEE_MACHINE_ENTITY)
     self.cursor        = Cursor()
     self.customerManager = CustomerManager()
     self.timeManager = TimeManager()
+    self.pauseButton = Button(BUTTON_PARAMS['Pause'])
 
     self.interactables = {
-        self.coffeeMachine
+        self.coffeeMachine,
+        self.pauseButton,
     }
 
     gStateStack:push(self.timeManager)
     gStateStack:push(self.customerManager)
     gStateStack:push(self.coffeeMachine)
+    gStateStack:push(self.pauseButton)
     gStateStack:push(self.cursor)
 
     -- Economy
@@ -25,12 +30,6 @@ end
 -- ─── Update ───────────────────────────────────────────────────────────────────
 
 function PlayState:update(dt)
-    -- Pause menu
-    if love.keyboard.wasPressed('p') then
-        gStateStack:pause()
-        gStateStack:push(PauseMenu())
-    end
-
     -- Floating money cleanup
     for i = #self.floatingMoney, 1, -1 do
         local m = self.floatingMoney[i]
@@ -40,7 +39,7 @@ function PlayState:update(dt)
         end
     end
 
-    -- ── Mouse interactions ────────────────────────────────────────────────────
+    --[[── Mouse interactions ────────────────────────────────────────────────────
     -- Begin drag from coffee machine
     if love.mouse.wasPressed(1) then
         local target = self:getInteractAt()
@@ -63,7 +62,9 @@ function PlayState:update(dt)
             self.coffeeMachine:taken()
         end
         self.cursor:isReleased()
-    end
+    end]]
+
+    self:mouseResponse()
 end
 
 -- ─── Render ───────────────────────────────────────────────────────────────────
@@ -98,25 +99,6 @@ function PlayState:render()
     -- 5. Floating money
     for _, m in ipairs(self.floatingMoney) do
         m:render()
-    end
-end
-
--- ─── Helper functions ─────────────────────────────────────────────────────────
-
--- Returns the first WAITING customer under the mouse cursor, or nil.
-function PlayState:getInteractAt()
-    self:getInteractables()
-    for _, c in ipairs(self.interactables) do
-        if c:isMouseOver() then
-            return c
-        end
-    end
-    return nil
-end
-
-function PlayState:getInteractables()
-    for _, i in ipairs(self.customerManager:getAllCustomers()) do
-        table.insert(self.interactables, i)
     end
 end
 

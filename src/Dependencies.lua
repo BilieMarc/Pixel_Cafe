@@ -13,6 +13,7 @@ gFonts = {
 }
 
 gFrames = {
+    ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.jpg'),
     customers = {
         love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
@@ -35,3 +36,4 @@ require('src.states.entity.OrderBox')
 require('src.states.entity.FloatingMoney')
 require('src.states.entity.Cursor')
 require('src.states.entity.TimeManager')
+require('src.states.entity.Button')

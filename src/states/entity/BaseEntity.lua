@@ -19,5 +19,7 @@ end
 function BaseEntity:onPressed()
     if self.isMachine and self.productionStage == 'Void' then
         self:produce()
+    elseif self.isGUI then
+        self:clicked()
     end
 end

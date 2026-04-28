@@ -26,9 +26,9 @@ src/states/game
 - DayEndState.lua
 - PauseMenu.lua
 - StartMenu.lua
-- PauseMenu.lua
 src/states/entity
 - BaseEntity.lua
+- Button.lua
 - CoffeeMachine.lua
 - Cursor.lua
 - CustomerState.lua
