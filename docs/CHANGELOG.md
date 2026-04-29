@@ -51,3 +51,12 @@
 - When hovering, the color of the box will be yellow and for unclickable the color is gray hover or not. By default it is white.
 - Moved mouse related logic including the loops in update function and getInteractAt function and getInteractables function in PlayState into BaseState.lua so that all the game states can share it.
 - Just by calling self:mouseResponse() in an update function, we can now use it in any and all game states with the requirements being that state having self.interactables property and the button instance is pushed to gStateStack.
+
+### v0.7.0 - 2026-04-30
+- **MoneyManager.lua**: Created a new centralized economy entity to handle shop finances. Tracks persistent `totalMoney` and session `todayMoney`. Implements a "count-up" visual animation for the HUD balance. Centralizes payout calculations (base price + patience bonus) with a strict rule where all transactions are rounded to the nearest 5-unit increment.
+- **PauseMenu.lua**: Full visual and logic refactor. Implemented as a polished, centered "UI Card" overlay with a semi-transparent dimming effect. Added three functional buttons: Resume (pops state), Restart (re-initializes PlayState), and Quit (returns to StartMenu with red visual tint). Added keyboard shortcuts (ESC/P) for toggling pause. Suspends all PlayState logic (timers, movement) when active.
+- **DayEndState.lua**: Redesigned using the centered UI card layout. Correctly displays today's earnings and new total balance without overlapping the "Next Day" button.
+- **constants.lua**: Added `MONEY_CONFIG` for economy settings and `UI_CARD` to define shared dimensions and styling for centered menu containers. Adjusted button positions for better layout.
+- **PlayState.lua**: Refactored to delegate all financial tracking and HUD rendering to `MoneyManager`. Integrated keyboard-based pausing.
+- **CustomerState.lua**: Simplified order fulfillment logic by offloading payment math to the Money entity.
+- **Dependencies.lua**: Added registration for the `MoneyManager` class.

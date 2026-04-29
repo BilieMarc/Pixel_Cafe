@@ -33,6 +33,21 @@ CUSTOMER_CONFIG = {
     patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
 }
 
+MONEY_CONFIG = {
+    startingMoney   = 50,
+    minUnit         = 5,
+    countUpSpeed    = 120,
+}
+
+UI_CARD = {
+    width  = 200,
+    height = 140,
+    x      = VIRTUAL_WIDTH / 2 - 100,
+    y      = VIRTUAL_HEIGHT / 2 - 70,
+    color  = {0.15, 0.15, 0.2, 0.95},
+    border = {0.6, 0.6, 0.7, 0.8},
+}
+
 AVAILABLE_ITEMS = {
     'Coffee',
 }
@@ -94,7 +109,7 @@ BUTTON_PARAMS = {
     ['NextDay'] = {
         text = 'Next Day',
         x = VIRTUAL_WIDTH / 2 - 24,
-        y = VIRTUAL_HEIGHT / 2 - 16,
+        y = VIRTUAL_HEIGHT / 2 + 30,
         desired_width = 48,
         desired_height = 16,
         action = function()

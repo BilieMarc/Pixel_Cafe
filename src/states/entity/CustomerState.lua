@@ -110,24 +110,14 @@ function CustomerState:setState(newState)
     self.stateTimer = 0
 end
 
--- Called by PlayState when the player drags coffee onto this customer.
--- Strict check: itemType must match self.orderType (string comparison).
 function CustomerState:receiveItem(itemType)
     if self.state ~= 'waiting' then return false end
-    if itemType ~= self.orderBox.orderType then return false end     -- wrong item
+    if itemType ~= self.orderBox.orderType then return false end
 
-    -- Capture patience at payment time for tip calculation
     if self.orderBox then
         self.patienceAtPayment = self.orderBox.patience
         self.orderBox:deactivate()
     end
-
-    -- Calculate total payment: base price + patience-scaled tip
-    local patiencePct  = self.patienceAtPayment / CUSTOMER_CONFIG.patienceMax
-    local baseTip      = self.orderBox.order.price * CUSTOMER_CONFIG.baseTip
-    local patienceTip  = self.orderBox.order.price * CUSTOMER_CONFIG.patienceBonus * patiencePct
-    local tipTotal     = baseTip + patienceTip
-    self.totalPayment  = self.orderBox.order.price + tipTotal
 
     self:setState('paying')
     return true
