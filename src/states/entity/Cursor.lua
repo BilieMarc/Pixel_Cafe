@@ -17,7 +17,7 @@ function Cursor:render()
         love.graphics.circle('fill', mouseX, mouseY, 6, 12)
         love.graphics.setColor(0.2, 0.1, 0.0, 1)  -- dark outline
         love.graphics.circle('line', mouseX, mouseY, 6, 12)
-        love.graphics.setColor(1, 1, 1, 1)         -- reset
+        love.graphics.setColor(gColors['white'])         -- reset
     end
 end
 

@@ -16,9 +16,9 @@ end
 
 function Button:render()
     if self.isHovering and self.clickable then
-        love.graphics.setColor(gColors['yellow'])
+        love.graphics.setColor(self.hoverColor)
     elseif self.clickable then
-        love.graphics.setColor(gColors['white'])
+        love.graphics.setColor(self.defaultColor)
     else
         love.graphics.setColor(gColors['gray'])
     end

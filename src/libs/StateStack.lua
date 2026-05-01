@@ -41,15 +41,17 @@ end
 
 function StateStack:render()
     for i, state in ipairs(self.states) do
+        love.graphics.setColor(gColors['white'])
         state:render()
     end
 
     if self.paused then
         love.graphics.setColor(0, 0, 0, 0.5)
         love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
-        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setColor(gColors['white'])
         
         for i, state in ipairs(self.pausedTable) do
+            love.graphics.setColor(gColors['white'])
             state:render()
         end
     end
