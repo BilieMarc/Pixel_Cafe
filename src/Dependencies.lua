@@ -17,7 +17,12 @@ gFrames = {
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.jpg'),
     customers = {
         love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
-    }
+    },
+    ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
+    ['BreadBasket'] = love.graphics.newImage('assets/panOfLoavesOfBread.png'),
+    ['SliceOfBread'] = love.graphics.newImage('assets/sliceOfBread.png'),
+    ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
+    ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
 }
 
 require('src.constants')
@@ -40,3 +45,6 @@ require('src.states.entity.TimeManager')
 require('src.states.entity.Button')
 require('src.states.entity.PauseMenuCard')
 require('src.states.entity.DayEndStateCard')
+require('src.states.entity.BreadBasket')
+require('src.states.entity.BreadPlate')
+require('src.states.entity.SandwichPlate')

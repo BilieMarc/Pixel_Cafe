@@ -34,10 +34,14 @@ function BaseState:mouseResponse()
         local target = self:getInteractAt()
 
         if target then
-            target:onPressed()
-
-            if target.productionStage == 'Ready' and target.isMachine then
+            if target.productionStage == 'Ready' then
                 self.cursor:isDragged(target)
+            elseif target.isMachine and target.productionStage == 'Void' then
+                target:produce()
+            elseif target.isClicker and target.productionStage ~= 'Void' then
+                target:action()
+            elseif target.isGUI then
+                target:clicked()
             end
         end
     end
@@ -45,9 +49,16 @@ function BaseState:mouseResponse()
     if love.mouse.wasReleased(1) and (self.cursor and self.cursor.isDragging) then
         local target = self:getInteractAt()
 
-        if target and target.type == 'CustomerState' and target.orderBox then
-            self:deliverItem(target)
-            self.coffeeMachine:taken()
+        if target then
+            if target.type == 'CustomerState' and target.orderBox then
+                self:deliverItem(target)
+                self.coffeeMachine:taken()
+            elseif target.type == 'BreadPlate' and target.productionStage == 'Void' then
+                self:deliverItem(target)
+            elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
+                self:deliverItem(target)
+                self.breadPlate:taken()
+            end
         end
         self.cursor:isReleased()
     end

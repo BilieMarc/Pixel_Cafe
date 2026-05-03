@@ -61,3 +61,11 @@
 - **CustomerState.lua**: Simplified order fulfillment logic by offloading payment math to the Money entity.
 - **Dependencies.lua**: Added registration for the `MoneyManager` class.
 - Add DayEndStateCard and PauseMenuCard entities to handle the problem that arises when the buttons are pushed to gStateStack.
+
+### v0.8.0 - 2026-05-03
+- In BaseEntity, render function for Cursor heldItem is modified. onPressed function is deleted and directly used it in BaseState.
+- BreadBasket, BreadPlate and Sandwich are newly created.
+- Cursor can now display its heldItem if they are defined. If not it will describe the heldItem with text.
+- In PlayState, deliverItem function's parameter name is changed from customer to target since it now accomodate the logic including other entities not customer.
+- BaseState now directly handle which entity get which function activated imported from onPressed function's modified version.
+- Five assets including loafOfBread, panOfLoavesOfBread, panOfSlicesOfBread, sandwichPlate and sliceOfBread.

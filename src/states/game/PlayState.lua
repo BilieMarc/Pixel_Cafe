@@ -9,16 +9,25 @@ function PlayState:init()
     self.cursor          = Cursor()
     self.customerManager = CustomerManager()
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
+    self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
+    self.breadPlate = BreadPlate(BREAD_PLATE_CONFIG)
+    self.sandwichPlate = SandwichPlate(SANDWICH_PLATE_CONFIG)
 
     self.interactables = {
         self.coffeeMachine,
         self.pauseButton,
+        self.breadBasket,
+        self.breadPlate,
+        self.sandwichPlate,
     }
 
     gStateStack:push(self.moneyManager)
     gStateStack:push(self.timeManager)
     gStateStack:push(self.customerManager)
     gStateStack:push(self.coffeeMachine)
+    gStateStack:push(self.breadBasket)
+    gStateStack:push(self.breadPlate)
+    gStateStack:push(self.sandwichPlate)
     gStateStack:push(self.pauseButton)
     gStateStack:push(self.cursor)
 end
@@ -40,15 +49,15 @@ function PlayState:render()
                             VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)
 end
 
-function PlayState:deliverItem(customer)
-    local success = customer:receiveItem(self.cursor.heldItem)
+function PlayState:deliverItem(target)
+    local success = target:receiveItem(self.cursor.heldItem)
     if success then
-        local amount, base, tip = self.moneyManager:calculatePayment(customer)
-        customer.totalPayment = amount
+        local amount, base, tip = self.moneyManager:calculatePayment(target)
+        target.totalPayment = amount
         self.moneyManager:addPayment(amount, base, tip)
         self.moneyManager:spawnFloatingMoney(
-            customer.x + customer.desired_width / 2,
-            customer.y,
+            target.x + target.desired_width / 2,
+            target.y,
             amount
         )
     end

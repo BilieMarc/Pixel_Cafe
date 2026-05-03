@@ -28,13 +28,18 @@ src/states/game
 - StartMenu.lua
 src/states/entity
 - BaseEntity.lua
+- BreadBasket.lua
+- BreadPlate.lua
 - Button.lua
 - CoffeeMachine.lua
 - Cursor.lua
 - CustomerState.lua
 - CustomerManager.lua
+- DayEndStateCard.lua
 - OrderBox.lua
 - FloatingMoney.lua
+- PauseMenuCard.lua
+- SandwichPlate.lua
 - TimeManager.lua
 
 ## Core Systems

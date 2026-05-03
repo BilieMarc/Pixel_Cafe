@@ -1,0 +1,29 @@
+Debug Document
+
+Bug ID: (e.g., #04 - Coffee Machine Reset)
+Status: (Open / In Progress / Resolved)
+Reporter: (Who found it?)
+Description: What actually happened? (e.g., "The green circle disappeared but the machine didn't turn blue.")
+Steps to Reproduce:
+    Start the game.
+    Click the coffee machine.
+    Quickly drag to the customer before the timer hits 100%.
+Expected Result: Machine remains in 'Producing' state.
+Actual Result: Machine resets to 'Void'.
+
+Bug ID: #01 - Click VS Drag Conflict
+Status: Open
+Reporter: Kyaw Sis Thway
+Description: The logic currently used for mouse operation has a major problem. 
+                It cannot distinguish between drag and click. After the introduction of isClicker type entity,
+                their dual functions are in conflict according to current logic. BreadPlate can be clicked three times and the outline
+                color will change according to how many times it has been clicked. But now, it can only be clicked once and the later
+                result all become drag mechanic.
+Steps to Reproduce:
+    Start the game.
+    Drag LoafOfBread from BreadBasket to BreadPlate.
+    Click BreadPlate once.
+    Click again.
+Expected Result: The color of the outline doesn't change from yellow to orange, which is the second stage representing two slices.
+Actual Result:  The color remains yellow. Drag SliceOfBread to SandwichPlate. The yellow outline becomes transparent proving
+                that its count is now 0.

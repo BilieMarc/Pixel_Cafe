@@ -76,6 +76,7 @@ gColors = {
     ['orange'] = {1, 0.5, 0, 1},
     ['gray'] = {0.5, 0.5, 0.5, 1},
     ['scarlet'] = {0.8, 0.25, 0.25, 1},
+    ['transparent'] = {1, 1, 1, 0},
 }
 
 BUTTON_PARAMS = {
@@ -193,4 +194,28 @@ BUTTON_PARAMS = {
         defaultColor = gColors['red'],
         hoverColor = gColors['scarlet'],
     }
+}
+
+BREAD_BASKET_CONFIG = {
+    frame = gFrames['BreadBasket'],
+    x = VIRTUAL_WIDTH - 100,
+    y = 130,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+BREAD_PLATE_CONFIG = {
+    frame = gFrames['BreadPlate'],
+    x = VIRTUAL_WIDTH - 60,
+    y = 130,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+SANDWICH_PLATE_CONFIG = {
+    frame = gFrames['SandwichPlate'],
+    x = VIRTUAL_WIDTH - 60,
+    y = 180,
+    desired_width = 32,
+    desired_height = 32,
 }
