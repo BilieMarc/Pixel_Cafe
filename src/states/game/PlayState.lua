@@ -52,13 +52,16 @@ end
 function PlayState:deliverItem(target)
     local success = target:receiveItem(self.cursor.heldItem)
     if success then
-        local amount, base, tip = self.moneyManager:calculatePayment(target)
-        target.totalPayment = amount
-        self.moneyManager:addPayment(amount, base, tip)
-        self.moneyManager:spawnFloatingMoney(
-            target.x + target.desired_width / 2,
-            target.y,
-            amount
-        )
+        -- Only customers generate payments; other entities simply accept the item
+        if target.type == 'CustomerState' and target.orderBox then
+            local amount, base, tip = self.moneyManager:calculatePayment(target)
+            target.totalPayment = amount
+            self.moneyManager:addPayment(amount, base, tip)
+            self.moneyManager:spawnFloatingMoney(
+                target.x + target.desired_width / 2,
+                target.y,
+                amount
+            )
+        end
     end
 end

@@ -8,14 +8,24 @@ function BreadPlate:init(params)
 
     self.productionStage = 'Void'
     self.slices = 0
+    self.loafRemaining = 0
     self.color = gColors['transparent']
 end
 
 function BreadPlate:update(dt)
-    if self.productionStage == 'Producing' and self.slices > 0 then
-        self.productionStage = 'Ready'
-    elseif self.productionStage == 'Ready' and self.slices == 0 then
-        self.productionStage = 'Void'
+    if self.productionStage == 'Producing' then
+        if self.slices > 0 then
+            self.productionStage = 'Ready'
+        end
+    elseif self.productionStage == 'Ready' then
+        if self.slices == 0 then
+            -- if there is still loaf remaining, go back to Producing, otherwise Void
+            if self.loafRemaining > 0 then
+                self.productionStage = 'Producing'
+            else
+                self.productionStage = 'Void'
+            end
+        end
     end
 
     if self.productionStage == 'Void' then
@@ -27,10 +37,11 @@ function BreadPlate:update(dt)
             self.color = gColors['yellow']
         elseif self.slices == 2 then
             self.color = gColors['orange']
-        elseif self.slices == 3 then
+        elseif self.slices >= 3 then
             self.color = gColors['red']
         end
     end
+
 end
 
 function BreadPlate:render()
@@ -40,12 +51,20 @@ function BreadPlate:render()
     love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
     love.graphics.setColor(gColors['white'])
     love.graphics.setFont(gFonts['small'])
-    --love.graphics.print(self.slices, self.x, self.y + self.desired_height + 2)
+    local label = 'Slices: ' .. self.slices
+    local font = gFonts['small']
+    local tw = font:getWidth(label)
+    local fh = font:getHeight()
+    love.graphics.setFont(font)
+    love.graphics.setColor(gColors['white'])
+    love.graphics.print(label, self.x + self.desired_width / 2 - tw / 2, self.y + self.desired_height + 4)
 end
 
 function BreadPlate:action()
-    if self.slices < 3 then
+    if self.loafRemaining > 0 then
         self.slices = self.slices + 1
+        self.loafRemaining = self.loafRemaining - 1
+        self.productionStage = 'Ready'
     end
 end
 
@@ -54,13 +73,23 @@ function BreadPlate:taken()
     if self.slices < 0 then
         self.slices = 0
     elseif self.slices == 0 then
-        self.productionStage = 'Void'
+        if self.loafRemaining > 0 then
+            self.productionStage = 'Producing'
+        else
+            self.productionStage = 'Void'
+        end
     end
 end
 
 function BreadPlate:receiveItem(item)
-    if item == 'LoafOfBread' and self.productionStage == 'Void' then
-        self.productionStage = 'Producing'
+    if item == 'LoafOfBread' then
+        if self.productionStage == 'Void' or self.loafRemaining == 0 then
+            self.productionStage = 'Producing'
+            self.loafRemaining = 3
+            return true
+        else
+            return false
+        end
     end
 
     return false
