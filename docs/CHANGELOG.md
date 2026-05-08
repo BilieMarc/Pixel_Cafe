@@ -74,3 +74,15 @@
 - Bug ID: #01 - Click VS Drag Conflict (fixed)
 - no. of slice is now decrease when giving to the customer 
 - no. of slice is now limit (maximum 3)
+
+### v0.9.0 - 2026-05-08
+- `Button.lua` has gained enable and disable function. Now clicked function can only be activated if the button is enabled.
+- `DayEndStateCard.lua` gets one more parameter when initialized. Display for currentDate to be shown is added.
+- `MoneyManager.lua` has only initializing parameters changed.
+- `StartMenuBackground.lua`. Noticed that the buttons disappear behind texture of StartMenu if pushed into gStateStack. Added a new file to handle the GUI.
+- `TimeManager.lua` also has its parameter changed or added. Added a function for developer to skip to next day easily. After each day reaches its end, the currentDate is saved.
+- At `DayEndState.lua`, money data is saved. Immediately after, a new json file is created with the data.
+- In `PlayState.lua`, every machine must now be unlocked to be pushed to gStateStack and get played. Add a local find function to reduce repititive codes.
+- `StartMenu.lua` gets a new button and has its own background stripped with the background becoming an independent entity.
+- `DataManager.lua` is a self-built library and its usage is explained in that file.
+- Developer can now skip to a next day using 'd' key in PlayState.

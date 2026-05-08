@@ -12,10 +12,12 @@
 - README.md
 src/
 - constants.lua
+- DataManager.lua
 - Dependencies.lua
 src/libs
 - SUIT
 - class.lua
+- dkjson.lua
 - push.lua
 - StateMachine.lua
 - StateStack.lua
@@ -40,6 +42,7 @@ src/states/entity
 - FloatingMoney.lua
 - PauseMenuCard.lua
 - SandwichPlate.lua
+- StartMenuBackground.lua
 - TimeManager.lua
 
 ## Core Systems

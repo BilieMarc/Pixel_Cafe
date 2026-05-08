@@ -3,6 +3,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+SAVE_FILE = 'data.json'
+
 COFFEE_MACHINE_ENTITY = {
     frame = gFrames['CoffeeMachine'],
     x = 10,
@@ -87,22 +89,24 @@ BUTTON_PARAMS = {
         desired_width = 32,
         desired_height = 16,
         action = function()
+            DataManager:load()
             gStateStack:clear()
             gStateStack:push(PlayState())
         end,
-        clickable = true,
+        clickable = false,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    ['Load'] = {
-        text = 'Load',
+    ['New'] = {
+        text = 'New',
         x = VIRTUAL_WIDTH / 2 - 16,
-        y = VIRTUAL_HEIGHT / 2 + 4,
+        y = VIRTUAL_HEIGHT / 2 - 35,
         desired_width = 32,
         desired_height = 16,
         action = function()
+            DataManager:getDefaultData()
             gStateStack:clear()
-            gStateStack:push(DayEndState())
+            gStateStack:push(PlayState())
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -179,6 +183,8 @@ BUTTON_PARAMS = {
         desired_width = 100,
         desired_height = 18,
         action = function()
+            DataManager:dateDataSave(DataManager:getData('currentDate') + 1)
+            DataManager:autoUnlockMachine()
             gStateStack:clear()
             gTodayMoney = 0
             
@@ -233,3 +239,5 @@ SANDWICH_PLATE_CONFIG = {
     desired_width = 32,
     desired_height = 32,
 }
+
+--money-related global variables are all in MoneyManager line #54

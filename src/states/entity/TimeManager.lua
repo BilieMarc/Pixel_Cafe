@@ -1,11 +1,13 @@
 TimeManager = class{__includes = BaseEntity}
 
-function TimeManager:init()
+function TimeManager:init(currentDate)
     -- Default to start hour 8 (8:00 AM)
     self.dayTime = 8 * 60
     
     -- 1 real second = 15 game minutes
     self.timeScale = 15
+
+    self.currentDate = currentDate
 end
 
 function TimeManager:update(dt)
@@ -14,6 +16,7 @@ function TimeManager:update(dt)
     
     -- Night time transition (8:00 PM / 20 hours)
     if currentHour >= 20 then
+        DataManager:dateDataSave(self.currentDate)
         gStateStack:clear()
         gStateStack:push(DayEndState())
     end
@@ -45,4 +48,8 @@ function TimeManager:render()
     love.graphics.print(timeString, VIRTUAL_WIDTH - 90, 2)
     -- Render period separately to prevent moving right and left
     love.graphics.print(period, VIRTUAL_WIDTH - 42, 2)
+end
+
+function TimeManager:devTimeSkip()
+    self.dayTime = 20 * 60
 end

@@ -4,6 +4,7 @@ function DayEndStateCard:init(params)
     self.isGUI = true
     self.earnedToday = params.earnedToday
     self.finalTotal = params.finalTotal
+    self.currentDate = params.currentDate
 end
 
 function DayEndStateCard:render()
@@ -24,6 +25,7 @@ function DayEndStateCard:render()
     local line1Y = card.y + 45
     local line2Y = card.y + 65
     local labelOffset = 20
+    local radius = 20
     -- Line 1: EARNED
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('EARNED', card.x + labelOffset, line1Y, card.width - labelOffset, 'left')
@@ -35,4 +37,13 @@ function DayEndStateCard:render()
     love.graphics.setColor(0.2, 0.8, 0.2, 1)
     love.graphics.printf(string.format('$%.2f', self.finalTotal), card.x, line2Y, card.width - labelOffset, 'right')
     love.graphics.setColor(1, 1, 1, 1)
+    -- Line 3: Date
+    love.graphics.setColor(gColors['white'])
+    love.graphics.circle('fill', card.x, card.y, radius) --radius 20
+    love.graphics.setColor(gColors['yellow'])
+    love.graphics.circle('line', card.x, card.y, radius) --radius 20
+    love.graphics.setFont(gFonts['large'])
+    love.graphics.setColor(gColors['black'])
+    love.graphics.printf(tostring(self.currentDate), card.x - radius / 2, card.y - radius / 2, radius, 'center')
+    love.graphics.setColor(gColors['white'])
 end

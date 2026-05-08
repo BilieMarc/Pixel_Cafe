@@ -7,10 +7,12 @@ function Button:init(params)
 end
 
 function Button:update(dt)
-    if self:isMouseOver() then
-        self.isHovering = true
-    else
-        self.isHovering = false
+    if self.clickable then
+        if self:isMouseOver() then
+            self.isHovering = true
+        else
+            self.isHovering = false
+        end
     end
 end
 
@@ -33,5 +35,15 @@ function Button:render()
 end
 
 function Button:clicked()
-    self.action()
+    if self.clickable then
+        self.action()
+    end
+end
+
+function Button:enable()
+    self.clickable = true
+end
+
+function Button:disable()
+    self.clickable = false
 end

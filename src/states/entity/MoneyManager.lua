@@ -1,8 +1,8 @@
 MoneyManager = class{__includes = BaseEntity}
 
-function MoneyManager:init()
-    self.totalMoney = gMoney or MONEY_CONFIG.startingMoney
-    self.todayMoney = 0
+function MoneyManager:init(totalMoney, todayMoney)
+    self.totalMoney = totalMoney
+    self.todayMoney = todayMoney
     self.floatingMoney = {}
 
     self._startingBalance = self.totalMoney
@@ -51,6 +51,7 @@ function MoneyManager:addPayment(amount, base, tip)
     self._dailySalesAmount = self._dailySalesAmount + (base or amount)
     self._dailyTipsAmount = self._dailyTipsAmount + (tip or 0)
 
+    --note in the constants.lua that money-related global variables are all here
     gMoney      = self.totalMoney
     gTodayMoney = self.todayMoney
     

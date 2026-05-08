@@ -1,17 +1,53 @@
 PlayState = class {__includes = BaseState}
 
+local function find(list, name)
+    for i = 1, #list do
+        if list[i] == name then
+            return true
+        end
+    end
+    return false
+end
+
 function PlayState:init()
     self.type = 'PlayState'
 
-    self.moneyManager    = MoneyManager()
-    self.timeManager     = TimeManager()
-    self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
-    self.cursor          = Cursor()
-    self.customerManager = CustomerManager()
+    self.data = DataManager:getData()
+
+    self.moneyManager    = MoneyManager(self.data['totalMoney'], self.data['todayMoney'])
+    gStateStack:push(self.moneyManager)
+
+    self.timeManager     = TimeManager(self.data['currentDate'])
+    gStateStack:push(self.timeManager)
+
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
-    self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
-    self.breadPlate = BreadPlate(BREAD_PLATE_CONFIG)
-    self.sandwichPlate = SandwichPlate(SANDWICH_PLATE_CONFIG)
+    gStateStack:push(self.pauseButton)
+
+    self.customerManager = CustomerManager()
+    gStateStack:push(self.customerManager)
+
+    if find(self.data['unlockedMachine'], 'CoffeeMachine') then
+        self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
+        gStateStack:push(self.coffeeMachine)
+    end
+
+    if find(self.data['unlockedMachine'], 'BreadBasket') then
+        self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
+        gStateStack:push(self.breadBasket)
+    end
+
+    if find(self.data['unlockedMachine'], 'BreadPlate') then
+        self.breadPlate = BreadPlate(BREAD_PLATE_CONFIG)
+        gStateStack:push(self.breadPlate)
+    end
+
+    if find(self.data['unlockedMachine'], 'SandwichPlate') then
+        self.sandwichPlate = SandwichPlate(SANDWICH_PLATE_CONFIG)
+        gStateStack:push(self.sandwichPlate)
+    end
+
+    self.cursor          = Cursor()
+    gStateStack:push(self.cursor)
 
     self.interactables = {
         self.coffeeMachine,
@@ -20,16 +56,6 @@ function PlayState:init()
         self.breadPlate,
         self.sandwichPlate,
     }
-
-    gStateStack:push(self.moneyManager)
-    gStateStack:push(self.timeManager)
-    gStateStack:push(self.customerManager)
-    gStateStack:push(self.coffeeMachine)
-    gStateStack:push(self.breadBasket)
-    gStateStack:push(self.breadPlate)
-    gStateStack:push(self.sandwichPlate)
-    gStateStack:push(self.pauseButton)
-    gStateStack:push(self.cursor)
 end
 
 function PlayState:update(dt)
@@ -37,6 +63,9 @@ function PlayState:update(dt)
         gStateStack:pause()
         gStateStack:push(PauseMenu())
         return
+    elseif love.keyboard.wasPressed('d') then
+        print('Developer Mode')
+        self.timeManager:devTimeSkip()
     end
 
     self:mouseResponse()
@@ -64,4 +93,8 @@ function PlayState:deliverItem(target)
             )
         end
     end
+end
+
+function PlayState:newGame()
+    self.isNew = true
 end

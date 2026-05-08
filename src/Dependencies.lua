@@ -26,8 +26,8 @@ gFrames = {
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
 }
 
+DataManager = require('src.DataManager')
 require('src.constants')
-require('src.DataManager')
 
 require('src.states.BaseState')
 require('src.states.game.PlayState')
@@ -50,3 +50,4 @@ require('src.states.entity.DayEndStateCard')
 require('src.states.entity.BreadBasket')
 require('src.states.entity.BreadPlate')
 require('src.states.entity.SandwichPlate')
+require('src.states.entity.StartMenuBackground')
