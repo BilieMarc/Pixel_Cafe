@@ -84,6 +84,8 @@ function BaseState:mouseResponse()
                         self.coffeeMachine:taken()
                     elseif self.cursor and self.cursor.heldItem == 'SliceOfBread' and self.breadPlate then
                         self.breadPlate:taken()
+                    elseif self.cursor and self.cursor.heldItem == 'Sandwich' and self.sandwichPlate then
+                        self.sandwichPlate:taken()
                     end
                 elseif target.type == 'BreadPlate' and (target.productionStage == 'Void' or (target.loafRemaining == 0 and target.slices == 0)) then
                     self:deliverItem(target)
