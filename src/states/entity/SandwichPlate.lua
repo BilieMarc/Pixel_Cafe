@@ -24,6 +24,7 @@ end
 
 function SandwichPlate:taken()
     self.productionStage = 'Void'
+    self.color = gColors['transparent']
 end
 
 function SandwichPlate:receiveItem(item)

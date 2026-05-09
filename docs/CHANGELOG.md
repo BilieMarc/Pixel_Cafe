@@ -75,6 +75,13 @@
 - no. of slice is now decrease when giving to the customer 
 - no. of slice is now limit (maximum 3)
 
+### v0.8.2 - 2026-05-09
+- Bug ID: #02 - Order Logic Valadiation (fidxed)
+- slice of bread and sandwich are added as an item for temporary
+  to test we can change that in ( game/constant.lua)
+- OrderBox changes Note
+  Giving name: sliceofbread as an bread (we can change that later) in OrderBox.lua 
+
 ### v0.9.0 - 2026-05-08
 - `Button.lua` has gained enable and disable function. Now clicked function can only be activated if the button is enabled.
 - `DayEndStateCard.lua` gets one more parameter when initialized. Display for currentDate to be shown is added.
@@ -93,9 +100,6 @@
 - Date is now directly saved in `DayEndState.lua` not through the button action.
 - `PlayState.lua` has its unnecessary function newGame removed.
 - `DataManager.lua` gets a new function modify to directly change the value of an attribute with the parameters being string type variable and value which doesn't have a specific type.
-### v0.82 - 2026-05-09
-- Bug ID: #02 - Order Logic Valadiation (fidxed)
-- slice of bread and sandwich are added as an item for temporary
-  to test we can change that in ( game/constant.lua)
-- OrderBox changes Note
-  Giving name: sliceofbread as an bread (we can change that later) in OrderBox.lua 
+
+### v0.9.2 - 2026-05-09
+- The green square around the Sandwich Plate doesn't disappear so added one more line to taken function.
