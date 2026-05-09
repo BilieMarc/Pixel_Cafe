@@ -28,3 +28,19 @@ Steps to Reproduce:
 Expected Result: The color of the outline doesn't change from yellow to orange, which is the second stage representing two slices.
 Actual Result:  The color remains yellow. Drag SliceOfBread to SandwichPlate. The yellow outline becomes transparent proving
                 that its count is now 0.
+
+Bug ID: #02 - Order Logic Validation
+Status: Resolved
+Reporter: Ko Kyaw Sis Thway
+Debugger: Luaegyigyi
+Description: The game logic failed to verify if the item delivered by the player matched the
+             customer's specific request. Customers would accept and pay for any item (e.g., giving Bread
+             when they asked for Coffee).
+Steps to Reproduce:
+     Start the game and wait for a customer to request COFFEE.
+     Pick up a SLICE OF BREAD or SANDWICH.
+     Interact with the customer.
+     Observe that the item is accepted and payment is received regardless of the request.
+Expected Result:The customer should only accept the item if the Player Item ID matches the Customer Request ID.
+                If the items do not match, the customer should reject the item and no payment should be processed. 
+Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.            

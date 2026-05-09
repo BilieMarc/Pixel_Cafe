@@ -93,3 +93,9 @@
 - Date is now directly saved in `DayEndState.lua` not through the button action.
 - `PlayState.lua` has its unnecessary function newGame removed.
 - `DataManager.lua` gets a new function modify to directly change the value of an attribute with the parameters being string type variable and value which doesn't have a specific type.
+### v0.82 - 2026-05-09
+- Bug ID: #02 - Order Logic Valadiation (fidxed)
+- slice of bread and sandwich are added as an item for temporary
+  to test we can change that in ( game/constant.lua)
+- OrderBox changes Note
+  Giving name: sliceofbread as an bread (we can change that later) in OrderBox.lua 

@@ -121,7 +121,7 @@ function CustomerState:receiveItem(itemType)
     end
 
     self:setState('paying')
-    return true
+    return self.isOrderCorrect
 end
 
 -- Called by OrderBox when patience hits 0.
