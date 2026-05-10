@@ -11,6 +11,7 @@
 - .gitmodules
 - README.md
 src/
+- Animation.lua
 - constants.lua
 - DataManager.lua
 - Dependencies.lua
