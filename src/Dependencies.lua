@@ -8,9 +8,9 @@ _G.suit  = require('src.libs.SUIT')
 _G.json = require('src.libs.dkjson')
 
 gFonts = {
-    ['large']  = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 32),
-    ['medium'] = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 16),
-    ['small']  = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 8),
+    ['large']  = love.graphics.newFont('assets/font.ttf', 32),
+    ['medium'] = love.graphics.newFont('assets/font.ttf', 16),
+    ['small']  = love.graphics.newFont('assets/font.ttf', 8),
 }
 
 gFrames = {
