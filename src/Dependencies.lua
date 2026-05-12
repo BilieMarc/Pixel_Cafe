@@ -36,11 +36,20 @@ require('src.Animation')
 DataManager = require('src.DataManager')
 require('src.constants')
 
+-- Audio loading
+gMusic = love.audio.newSource('assets/music&SFX/Cafe Love - WOW Sound  The Boba Teashop Main Theme.mp3', 'stream')
+gMusic:setLooping(true)
+-- SFX 
+gSounds = {
+    ['click'] = love.audio.newSource('assets/music&SFX/SFX/mouse-click.mp3', 'static'),
+}
+
 require('src.states.BaseState')
 require('src.states.game.PlayState')
 require('src.states.game.StartMenu')
 require('src.states.game.DayEndState')
 require('src.states.game.PauseMenu')
+require('src.states.game.SettingsState')
 
 require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')

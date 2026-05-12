@@ -5,11 +5,14 @@ function PauseMenu:init()
 
     self.restartButton = Button(BUTTON_PARAMS['Restart'])
 
+    self.settingsButton = Button(BUTTON_PARAMS['Settings'])
+
     self.quitButton = Button(BUTTON_PARAMS['PauseQuit'])
 
     self.interactables = {
         self.resumeButton,
         self.restartButton,
+        self.settingsButton,
         self.quitButton,
     }
 

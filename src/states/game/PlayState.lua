@@ -75,6 +75,19 @@ function PlayState:init()
     }
 end
 
+function PlayState:enter()
+    if gMusic and gSettings.musicVolume > 0 then
+        gMusic:setVolume(gSettings.musicVolume)
+        gMusic:play()
+    end
+end
+
+function PlayState:exit()
+    if gMusic then
+        gMusic:stop()
+    end
+end
+
 function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') or love.keyboard.wasPressed('p') then
         gStateStack:pause()

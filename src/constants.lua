@@ -57,20 +57,25 @@ MONEY_CONFIG = {
 }
 
 UI_CARD = {
-    width  = 200,
+    width  = 260,
     height = 140,
-    x      = VIRTUAL_WIDTH / 2 - 100,
+    x      = VIRTUAL_WIDTH / 2 - 130,
     y      = VIRTUAL_HEIGHT / 2 - 70,
     color  = {0.15, 0.15, 0.2, 0.95},
     border = {0.6, 0.6, 0.7, 0.8},
 }
 
+gSettings = {
+    musicVolume = 1.0,
+    sfxVolume = 1.0
+}
+
 PAUSE_MENU_CONFIG = {
     btnW = 100,
     btnH = 16,
-    btnX = UI_CARD.x + UI_CARD.width / 2 - 50, -- 50 is btnW /2
-    btnStartY = UI_CARD.y + 55,
-    spacing = 22
+    btnX = VIRTUAL_WIDTH / 2 - 50, -- Centered
+    btnStartY = UI_CARD.y + 45,
+    spacing = 20
 }
 
 AVAILABLE_ITEMS = {}
@@ -175,7 +180,7 @@ BUTTON_PARAMS = {
     ['PauseQuit'] = {
         text = 'Quit',
         x = PAUSE_MENU_CONFIG.btnX,
-        y = PAUSE_MENU_CONFIG.btnStartY + PAUSE_MENU_CONFIG.spacing * 2,
+        y = PAUSE_MENU_CONFIG.btnStartY + PAUSE_MENU_CONFIG.spacing * 3,
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
@@ -190,6 +195,45 @@ BUTTON_PARAMS = {
         isQuit = true,
         defaultColor = gColors['red'],
         hoverColor = gColors['scarlet'],
+    },
+    ['Settings'] = {
+        text = 'Settings',
+        x = PAUSE_MENU_CONFIG.btnX,
+        y = PAUSE_MENU_CONFIG.btnStartY + PAUSE_MENU_CONFIG.spacing * 2,
+        desired_width = PAUSE_MENU_CONFIG.btnW,
+        desired_height = PAUSE_MENU_CONFIG.btnH,
+        action = function()
+            gStateStack:push(SettingsState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['SettingsBack'] = {
+        text = 'Back',
+        x = PAUSE_MENU_CONFIG.btnX,
+        y = UI_CARD.y + 115,
+        desired_width = PAUSE_MENU_CONFIG.btnW,
+        desired_height = PAUSE_MENU_CONFIG.btnH,
+        action = function()
+            gStateStack:pop()
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['StartSettings'] = {
+        text = 'Settings',
+        x = VIRTUAL_WIDTH / 2 - 32,
+        y = VIRTUAL_HEIGHT / 2 + 5,
+        desired_width = 64,
+        desired_height = 16,
+        action = function()
+            gStateStack:push(SettingsState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     },
     ['NextDay'] = {
         text = 'NEXT DAY',

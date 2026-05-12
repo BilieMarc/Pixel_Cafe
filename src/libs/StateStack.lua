@@ -75,19 +75,20 @@ function StateStack:push(state)
 end
 
 function StateStack:pop(state)
-    -- Safely remove the current state if the stack is not empty.
-    if #self.states > 0 then
+    local targetTable = self.paused and self.pausedTable or self.states
+
+    if #targetTable > 0 then
         if state then
-            for i = #self.states, 1, -1 do
-                if self.states[i] == state then
-                    self.states[i]:exit()
-                    table.remove(self.states, i)
+            for i = #targetTable, 1, -1 do
+                if targetTable[i] == state then
+                    targetTable[i]:exit()
+                    table.remove(targetTable, i)
                     break -- Stop once we find and remove it
                 end
             end
         else
-            self.states[#self.states]:exit()
-            table.remove(self.states)
+            targetTable[#targetTable]:exit()
+            table.remove(targetTable)
         end
     end
 end
