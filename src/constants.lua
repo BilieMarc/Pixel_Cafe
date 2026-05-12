@@ -22,6 +22,7 @@ gColors = {
 gTexts = {
     ['DataLossAsk'] = 'You might lose your progress! Proceed?',
     ['Dev'] = 'Developer Tool',
+    ['NameGive'] = 'Click Ok Button to register Cafe Name!',
 }
 
 ANIMATION_DEFS = {
@@ -114,7 +115,7 @@ POPUP_WINDOW_CONFIG = {
 }
 
 POPUP_INPUT_BOX = {
-    x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 115),
+    x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 65),
     y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2),
     desired_width = POPUP_WINDOW_CONFIG.width - 20, --10 is buffer for both sides
     desired_height = 30,
@@ -145,9 +146,8 @@ BUTTON_PARAMS = {
         desired_width = 32,
         desired_height = 16,
         action = function()
-            DataManager:getDefaultData()
-            gStateStack:clear()
-            gStateStack:push(PlayState())
+            gStateStack:popupCreate()
+            gStateStack:push(PopupWindow('NameGive'))
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -280,6 +280,23 @@ BUTTON_PARAMS = {
             gMoney = nil
             gTodayMoney = nil
             gStateStack:push(StartMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['OkNameGive'] = {
+        text = 'OK',
+        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16), --16 is width / 2
+        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8), --8 is height / 2
+        desired_width = 32,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:popupDelete()
+            DataManager:getDefaultData() --new button's action
+            gStateStack:clear()
+            gStateStack:push(PlayState())
         end,
         clickable = true,
         defaultColor = gColors['white'],

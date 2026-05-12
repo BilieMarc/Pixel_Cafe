@@ -3,9 +3,7 @@ PopupWindow = class {__includes = BaseState}
 function PopupWindow:init(type)
     self.type = type
 
-    if self.type == 'DataLossAsk' then self.text = gTexts[self.type]
-    elseif self.type == 'Dev' then self.text = gTexts[self.type]
-    else self.text = 'None' end
+    self.text = gTexts[self.type] or 'None'
 
     self.card = PopupWindowCard(self.text)
     gStateStack:push(self.card)
@@ -21,16 +19,20 @@ function PopupWindow:init(type)
         self.okButton = Button(BUTTON_PARAMS['OkButton'])
         table.insert(self.interactables, self.okButton)
         gStateStack:push(self.okButton)
-    elseif self.type == 'Dev' then
-        self.input = InputBox()
-        table.insert(self.interactables, self.input)
-        gStateStack:push(self.input)
+    elseif self.type == 'Dev' or self.type == 'NameGive' then
+        --[[self.okButton = Button(BUTTON_PARAMS['OkNameGive'])
+        table.insert(self.interactables, self.okButton)
+        gStateStack:push(self.okButton)]]
+        self.inputBox = InputBox
+        suit.setHit('inputBox')
     end
 end
 
 function PopupWindow:update(dt)
     self:mouseResponse()
+    if self.type == 'Dev' or self.type == 'NameGive' then self.inputBox.update(dt) end
 end
 
 function PopupWindow:render()
+    if self.type == 'Dev' or self.type == 'NameGive' then self.inputBox.draw() end
 end

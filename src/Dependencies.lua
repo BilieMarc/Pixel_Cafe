@@ -35,6 +35,7 @@ end
 require('src.Animation')
 DataManager = require('src.DataManager')
 require('src.constants')
+InputBox = require('src.InputBox')
 
 require('src.states.BaseState')
 require('src.states.game.PlayState')
@@ -56,7 +57,6 @@ require('src.states.entity.Button')
 require('src.states.entity.BreadBasket')
 require('src.states.entity.BreadPlate')
 require('src.states.entity.SandwichPlate')
-require('src.states.entity.InputBox')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')
