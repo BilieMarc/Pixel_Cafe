@@ -28,6 +28,12 @@ function love.update(dt)
     if mouseX and mouseY then
         suit.updateMouse(mouseX, mouseY, love.mouse.isDown(1))
     end
+
+    if love.keyboard.wasPressed('k') then
+        gStateStack:popupCreate()
+        gStateStack:push(PopupWindow('Dev'))
+    end
+
     gStateStack:update(dt)
     love.keyboard.keysPressed = {}
     love.mouse.keysPressed = {}

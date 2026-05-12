@@ -6,6 +6,7 @@ function StartMenu:init()
     self.playButton = Button(BUTTON_PARAMS['Play'])
     self.newButton = Button(BUTTON_PARAMS['New'])
     self.background = StartMenuBackground()
+    self.popup = PopupWindow(POPUP_WINDOW_CONFIG)
 
     if love.filesystem.getInfo(SAVE_FILE) then
         self.playButton:enable()
@@ -19,6 +20,7 @@ function StartMenu:init()
     gStateStack:push(self.background)
     gStateStack:push(self.playButton)
     gStateStack:push(self.newButton)
+    gStateStack:push(self.popup)
 end
 
 function StartMenu:update(dt)

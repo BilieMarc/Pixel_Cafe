@@ -12,22 +12,21 @@ function StateStack:init()
     self.states = {}
     self.paused = false
     self.pausedTable = {}
+    self.isPopup = false
+    self.popupTable = {}
 end
 
 function StateStack:update(dt)
-    if self.paused then
-            for i = #self.pausedTable, 1, -1 do
-            local state = self.pausedTable[i]
-            if state then
-                state:update(dt)
-            end
-        end
-    else
-        for i = #self.states, 1, -1 do
-            local state = self.states[i]
-            if state then
-                state:update(dt)
-            end
+    local updateTable
+    if self.isPopup then updateTable = self.popupTable
+    elseif self.paused then updateTable = self.pausedTable
+    else updateTable = self.states
+    end
+
+    for i = #updateTable, 1, -1 do
+        local state = updateTable[i]
+        if state then
+            state:update(dt)
         end
     end
 end
@@ -39,26 +38,31 @@ function StateStack:processAI(params, dt)
     end
 end
 
-function StateStack:render()
-    for i, state in ipairs(self.states) do
+local function renderTable(givenTable)
+    for i, state in ipairs(givenTable) do
         love.graphics.setColor(gColors['white'])
         state:render()
     end
+end
+
+function StateStack:render()
+    renderTable(self.states)
 
     if self.paused then
         love.graphics.setColor(0, 0, 0, 0.5)
         love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
         love.graphics.setColor(gColors['white'])
-        
-        for i, state in ipairs(self.pausedTable) do
-            love.graphics.setColor(gColors['white'])
-            state:render()
-        end
+
+        renderTable(self.pausedTable)
     end
+
+    renderTable(self.popupTable)
 end
 
 function StateStack:clear()
-    if self.paused then
+    if self.isPopup then
+        self.popupTable = {}
+    elseif self.paused then
         self.pausedTable = {}
     else
         self.states = {}
@@ -66,7 +70,9 @@ function StateStack:clear()
 end
 
 function StateStack:push(state)
-    if self.paused then
+    if self.isPopup then
+        table.insert(self.popupTable, state)
+    elseif self.paused then
         table.insert(self.pausedTable, state)
     else
         table.insert(self.states, state)
@@ -75,19 +81,23 @@ function StateStack:push(state)
 end
 
 function StateStack:pop(state)
-    -- Safely remove the current state if the stack is not empty.
-    if #self.states > 0 then
+    local popTable
+    if self.isPopup then popTable = self.popupTable
+    elseif self.paused then popTable = self.pausedTable
+    else popTable = self.states end
+
+    if #popTable > 0 then
         if state then
-            for i = #self.states, 1, -1 do
-                if self.states[i] == state then
-                    self.states[i]:exit()
-                    table.remove(self.states, i)
+            for i = #popTable, 1, -1 do
+                if popTable[i] == state then
+                    popTable[i]:exit()
+                    table.remove(popTable, i)
                     break -- Stop once we find and remove it
                 end
             end
         else
-            self.states[#self.states]:exit()
-            table.remove(self.states)
+            popTable[#popTable]:exit()
+            table.remove(popTable)
         end
     end
 end
@@ -98,4 +108,12 @@ end
 
 function StateStack:resume()
     self.paused = false
+end
+
+function StateStack:popupCreate()
+    self.isPopup = true
+end
+
+function StateStack:popupDelete()
+    self.isPopup = false
 end

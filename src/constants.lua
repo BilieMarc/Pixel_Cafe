@@ -5,6 +5,25 @@ VIRTUAL_HEIGHT = 243
 
 SAVE_FILE = 'data.json'
 
+gColors = {
+    ['white'] = {1, 1, 1, 1},
+    ['black'] = {0, 0, 0, 1},
+    ['green'] = {0.2, 1, 0.2, 1},
+    ['red'] = {1, 0.2, 0.2, 1},
+    ['blue'] = {0.2, 0.2, 1, 1},
+    ['yellow'] = {1, 1, 0.2, 1},
+    ['purple'] = {0.5, 0.2, 0.5, 1},
+    ['orange'] = {1, 0.5, 0, 1},
+    ['gray'] = {0.5, 0.5, 0.5, 1},
+    ['scarlet'] = {0.8, 0.25, 0.25, 1},
+    ['transparent'] = {1, 1, 1, 0},
+}
+
+gTexts = {
+    ['DataLossAsk'] = 'You might lose your progress! Proceed?',
+    ['Dev'] = 'Developer Tool',
+}
+
 ANIMATION_DEFS = {
     CoffeeMachine = {
         frames = gFrames['CoffeeMachineAnimation'],
@@ -85,18 +104,22 @@ ORDER_TYPES = {
     ['Sandwich']     = {price = 7, name = 'Sandwich'},
 }
 
-gColors = {
-    ['white'] = {1, 1, 1, 1},
-    ['black'] = {0, 0, 0, 1},
-    ['green'] = {0.2, 1, 0.2, 1},
-    ['red'] = {1, 0.2, 0.2, 1},
-    ['blue'] = {0.2, 0.2, 1, 1},
-    ['yellow'] = {1, 1, 0.2, 1},
-    ['purple'] = {0.5, 0.2, 0.5, 1},
-    ['orange'] = {1, 0.5, 0, 1},
-    ['gray'] = {0.5, 0.5, 0.5, 1},
-    ['scarlet'] = {0.8, 0.25, 0.25, 1},
-    ['transparent'] = {1, 1, 1, 0},
+POPUP_WINDOW_CONFIG = {
+    width = 150,
+    height = 80,
+    x = math.floor(VIRTUAL_WIDTH / 2 - 75),
+    y = math.floor(VIRTUAL_HEIGHT / 2 - 40),
+    color = gColors['white'],
+    border = gColors['blue'],
+}
+
+POPUP_INPUT_BOX = {
+    x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 115),
+    y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2),
+    desired_width = POPUP_WINDOW_CONFIG.width - 20, --10 is buffer for both sides
+    desired_height = 30,
+    color = gColors['gray'],
+    border = gColors['black'],
 }
 
 BUTTON_PARAMS = {
@@ -182,12 +205,8 @@ BUTTON_PARAMS = {
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
-            gStateStack:clear()
-            gStateStack:resume()
-            gStateStack:clear()
-            gMoney = nil
-            gTodayMoney = nil
-            gStateStack:push(StartMenu())
+            gStateStack:popupCreate()
+            gStateStack:push(PopupWindow('DataLossAsk'))
         end,
         clickable = true,
         isQuit = true,
@@ -231,6 +250,40 @@ BUTTON_PARAMS = {
         clickable = true,
         defaultColor = gColors['red'],
         hoverColor = gColors['scarlet'],
+    },
+    ['PopupX'] = {
+        text = 'X',
+        x = POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width - 16 - 1, --16 is width and 1 is buffer
+        y = POPUP_WINDOW_CONFIG.y + 1, --1 is buffer
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:popupDelete()
+        end,
+        clickable = true,
+        defaultColor = gColors['red'],
+        hoverColor = gColors['scarlet'],
+    },
+    ['OkButton'] = {
+        text = 'OK',
+        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16), --16 is width / 2
+        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8), --8 is height / 2
+        desired_width = 32,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:popupDelete()
+            gStateStack:clear() --pause quit button's action
+            gStateStack:resume()
+            gStateStack:clear()
+            gMoney = nil
+            gTodayMoney = nil
+            gStateStack:push(StartMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     }
 }
 
