@@ -11,8 +11,8 @@ end
 
 function BreadBasket:canDragToPlate(plate)
     if not plate then return false end
-    -- Only allow dragging a loaf to the plate if the plate is completely empty
-    if plate.slices == 0 and plate.loafRemaining == 0 then
+    -- Only allow dragging a loaf to the plate if the plate's loaf is finished
+    if plate.loafRemaining == 0 then
         return true
     end
     return false

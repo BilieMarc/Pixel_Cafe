@@ -60,9 +60,9 @@ Expected Result: Customers only request unlocked items and remain at the counter
 Actual Result:  Customers request "future" items and despawn immediately upon receiving an incorrect order.
 
 Bug ID: #04 - Plate State Conflict (Loaf vs. Slice)
-Status: Open
+Status: Resolved 
 Reporter: Luaegyigyi
-Debugger: 
+Debugger: Luaegyigyi
 Description: The player is unable to place or drag a full "Loaf" onto a plate if that plate already contains a "Slice." 
                  This prevents fulfilling orders for customers wanting a full Loaf if a slice was previously prepared or left over.
 Steps to Reproduce:

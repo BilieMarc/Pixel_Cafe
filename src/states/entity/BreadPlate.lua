@@ -83,8 +83,8 @@ end
 
 function BreadPlate:receiveItem(item)
     if item == 'LoafOfBread' then
-        -- Only accept a new loaf when the plate is completely empty
-        if self.productionStage == 'Void' and self.loafRemaining == 0 and self.slices == 0 then
+        -- Only accept a new loaf when the previous loaf is finished
+        if self.loafRemaining == 0 then
             self.productionStage = 'Producing'
             self.loafRemaining = 3
             return true
