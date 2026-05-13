@@ -43,6 +43,34 @@ Steps to Reproduce:
      Observe that the item is accepted and payment is received regardless of the request.
 Expected Result:The customer should only accept the item if the Player Item ID matches the Customer Request ID.
                 If the items do not match, the customer should reject the item and no payment should be processed. 
+Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.     
+
+Bug ID: #03 - Ordering Process Logic Errors
+Status: Resolved
+Reporter: Kyaw Sis Thway
+Debugger: Luaegyigyi
+Description: The ordering system is failing in two ways: 
+                 customers are requesting items that aren't unlocked yet for the current day, and 
+                 they are immediately leaving the shop if handed the wrong item instead of waiting for a correction.
+Steps to Reproduce:
+    Start the game.
+    Observe if a customer requests an item not yet unlocked
+    If they request a valid item, intentionally give them the wrong order type.
+Expected Result: Customers only request unlocked items and remain at the counter until their patience runs out or the correct order is served and patience is decrease.
+Actual Result:  Customers request "future" items and despawn immediately upon receiving an incorrect order.
+
+Bug ID: #04 - Plate State Conflict (Loaf vs. Slice)
+Status: Open
+Reporter: Luaegyigyi
+Debugger: 
+Description: The player is unable to place or drag a full "Loaf" onto a plate if that plate already contains a "Slice." 
+                 This prevents fulfilling orders for customers wanting a full Loaf if a slice was previously prepared or left over.
+Steps to Reproduce:
+    Start the game.
+    Place a "Slice" of bread onto an empty plate.
+    Attempt to drag a "Loaf" from the source/inventory onto that same plate.
+Expected Result: The player should be able to place a Loaf even if a slice is present. 
+Actual Result:  The Loaf cannot be dragged/placed, effectively "locking" the plate or preventing the Loaf order from being completed.
 Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.            
 
 Bug ID: #05 - Developer Command

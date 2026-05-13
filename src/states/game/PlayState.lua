@@ -16,6 +16,21 @@ function PlayState:init()
     print('Current Date: ' .. tostring(self.data['currentDate']))
     print('PlayState - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
 
+    -- we can insert more item here
+    for k, v in pairs(AVAILABLE_ITEMS) do AVAILABLE_ITEMS[k] = nil end
+    if find(self.data['unlockedMachine'], 'CoffeeMachine') then
+        table.insert(AVAILABLE_ITEMS, 'Coffee')
+    end
+    if find(self.data['unlockedMachine'], 'BreadBasket') then
+        table.insert(AVAILABLE_ITEMS, 'LoafOfBread')
+    end
+    if find(self.data['unlockedMachine'], 'BreadPlate') then
+        table.insert(AVAILABLE_ITEMS, 'SliceOfBread')
+    end
+    if find(self.data['unlockedMachine'], 'SandwichPlate') then
+        table.insert(AVAILABLE_ITEMS, 'Sandwich')
+    end
+
     self.moneyManager    = MoneyManager(self.data['totalMoney'], self.data['todayMoney'])
     gStateStack:push(self.moneyManager)
 

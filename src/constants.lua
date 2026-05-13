@@ -67,6 +67,7 @@ CUSTOMER_CONFIG = {
     patienceDecayRate = 2,    -- patience lost per second while waiting
     baseTip           = 0.2,  -- 20% base tip
     patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
+    wrongOrderPatiencePenalty = 10, -- we can adjust penalty here
 }
 
 MONEY_CONFIG = {
@@ -92,17 +93,13 @@ PAUSE_MENU_CONFIG = {
     spacing = 22
 }
 
-AVAILABLE_ITEMS = {
-    'Coffee',
-    'SliceOfBread',
-    'Sandwich',
-}
+AVAILABLE_ITEMS = {}
 
--- Order types: name -> {price, name}
 ORDER_TYPES = {
     ['Coffee']       = {price = 5, name = 'Coffee'},
     ['SliceOfBread'] = {price = 3, name = 'SliceOfBread'},
     ['Sandwich']     = {price = 7, name = 'Sandwich'},
+    ['LoafOfBread']  = {price = 6, name = 'LoafOfBread'},
 }
 
 POPUP_WINDOW_CONFIG = {

@@ -115,13 +115,20 @@ function CustomerState:receiveItem(itemType)
 
     self.isOrderCorrect = (itemType == self.orderBox.orderType)
 
-    if self.orderBox then
-        self.patienceAtPayment = self.orderBox.patience
-        self.orderBox:deactivate()
+    if self.isOrderCorrect then
+        if self.orderBox then
+            self.patienceAtPayment = self.orderBox.patience
+            self.orderBox:deactivate()
+        end
+        self:setState('paying')
+        return true
+    else
+        -- Penalty for wrong order type
+        if self.orderBox then
+            self.orderBox:decreasePatience(CUSTOMER_CONFIG.wrongOrderPatiencePenalty or 10)
+        end
+        return false
     end
-
-    self:setState('paying')
-    return self.isOrderCorrect
 end
 
 -- Called by OrderBox when patience hits 0.

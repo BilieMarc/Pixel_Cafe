@@ -4,12 +4,14 @@ local ORDER_LABELS = {
     ['Coffee']       = 'Coffee',
     ['SliceOfBread'] = 'Bread',
     ['Sandwich']     = 'Sandwich',
+    ['LoafOfBread']  = 'Loaf',
 }
 
 local ORDER_COLORS = {
     ['Coffee']       = {0.15, 0.55, 0.75, 1},
     ['SliceOfBread'] = {0.75, 0.55, 0.15, 1},
     ['Sandwich']     = {0.45, 0.25, 0.65, 1},
+    ['LoafOfBread']  = {0.85, 0.45, 0.15, 1},
 }
 
 function OrderBox:init(params)
@@ -111,4 +113,13 @@ end
 
 function OrderBox:deactivate()
     self.isActive = false
+end
+
+function OrderBox:decreasePatience(amount)
+    self.patience = self.patience - amount
+    if self.patience <= 0 then
+        self.patience = 0
+        self.isActive = false
+        self.customer:leaveImpatient()
+    end
 end
