@@ -30,12 +30,11 @@ function BaseState:getInteractables()
 end
 
 function BaseState:mouseResponse()
-    
+    -- when left click in the mouse, get which interactable entity exists there
     if love.mouse.wasPressed(1) then
         local target = self:getInteractAt()
-
+        -- if interactable entity exists, establish a table containing properties at that instant
         if target then
-            
             self._mouseDown = {
                 time = love.timer.getTime(),
                 x = mouseX,
@@ -47,18 +46,18 @@ function BaseState:mouseResponse()
         end
     end
 
-   
+    -- the entity at which the mouse point has been confirmed to be interactable and cursor is not dragging and also the mouse is continuously press
     if self._mouseDown and not (self.cursor and self.cursor.isDragging) and love.mouse.isDown(1) then
-        local dx = mouseX - self._mouseDown.x
+        local dx = mouseX - self._mouseDown.x --difference between global position and the position at which the mouse was clicked
         local dy = mouseY - self._mouseDown.y
         local dist2 = dx * dx + dy * dy
-        local thresh2 = 5 * 5
-        if dist2 > thresh2 then
+        local thresh2 = 5 * 5 --accepted as drag threshold circle has radius 5
+        if dist2 > thresh2 then --if the current mouse position has exceeded threshold
             local target = self._mouseDown.target
-            if target and target.productionStage == 'Ready' then
+            if target and target.productionStage == 'Ready' then --if it is a machine ready for drag
                 local allowDrag = true
-                if target.type == 'BreadBasket' and self.breadPlate then
-                    if not target:canDragToPlate(self.breadPlate) then
+                if target.type == 'BreadBasket' and self.breadPlate then --if the dragged entity is from BreadBasket and BreadPlate exists
+                    if not target:canDragToPlate(self.breadPlate) then --if the plate is unable to accept the dragged entity
                         allowDrag = false
                     end
                 end
@@ -74,7 +73,7 @@ function BaseState:mouseResponse()
     if love.mouse.wasReleased(1) then
        
         if (self.cursor and self.cursor.isDragging) then
-            local target = self:getInteractAt()
+            local target = self:getInteractAt() -- the entity the current cursor point at
 
             if target then
                 if target.type == 'CustomerState' and target.orderBox then
@@ -96,16 +95,15 @@ function BaseState:mouseResponse()
             end
             self.cursor:isReleased()
             self._mouseDown = nil
-        else
-            
+        else --cursor isn't dragging something
             if self._mouseDown then
-                local dt = love.timer.getTime() - self._mouseDown.time
+                local dt = love.timer.getTime() - self._mouseDown.time -- the difference between that instance and now
                 local dx = mouseX - self._mouseDown.x
                 local dy = mouseY - self._mouseDown.y
                 local dist2 = dx * dx + dy * dy
-                if dt <= 0.2 and dist2 <= (5 * 5) then
+                if dt <= 0.2 and dist2 <= (5 * 5) then --if the time and distance are under threshold
                     local target = self._mouseDown.target
-                    if target then
+                    if target then --target is not dragged but clicked
                         if target.isMachine and target.productionStage == 'Void' then
                             target:produce()
                         elseif target.isClicker and target.productionStage ~= 'Void' then
@@ -115,7 +113,7 @@ function BaseState:mouseResponse()
                         end
                     end
                 end
-                self._mouseDown = nil
+                self._mouseDown = nil --the coordinate is no longer needed
             end
         end
     end

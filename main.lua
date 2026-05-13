@@ -28,6 +28,12 @@ function love.update(dt)
     if mouseX and mouseY then
         suit.updateMouse(mouseX, mouseY, love.mouse.isDown(1))
     end
+
+    if love.keyboard.wasPressed('k') and not gStateStack.isPopup then
+        gStateStack:popupCreate()
+        gStateStack:push(PopupWindow('Dev'))
+    end
+
     gStateStack:update(dt)
     love.keyboard.keysPressed = {}
     love.mouse.keysPressed = {}
@@ -42,6 +48,7 @@ end
 
 function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
+    InputBox.keypressed(key)
 end
 
 function love.keyboard.wasPressed(key)
@@ -53,7 +60,7 @@ function love.resize(w, h)
 end
 
 function love.textedited(text, start, length)
-    suit.textedited(text, start, length)
+    InputBox.textedited(text, start, length)
 end
 
 function love.mousepressed(x, y, button)
@@ -71,3 +78,5 @@ end
 function love.mouse.wasReleased(button)
     return love.mouse.keysReleased[button]
 end
+
+function love.textinput(t) InputBox.textinput(t) end

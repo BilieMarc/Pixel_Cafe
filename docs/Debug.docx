@@ -71,3 +71,17 @@ Steps to Reproduce:
     Attempt to drag a "Loaf" from the source/inventory onto that same plate.
 Expected Result: The player should be able to place a Loaf even if a slice is present. 
 Actual Result:  The Loaf cannot be dragged/placed, effectively "locking" the plate or preventing the Loaf order from being completed.
+Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.            
+
+Bug ID: #05 - Developer Command
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: Although the PopupWindow is added, the developer function is so buggy it isn't recommended for use yet.
+Steps to Reproduce:
+     Start the game and press k at any game state.
+     Enter \dev skip (number) or \dev money (number).
+Expected Result: The result should directly interact with the game and influence it so that developer has easier time 
+                navigating the game.
+Actual Result:  Random things keep on popping while using developer mode. Determined that it is of low priority and
+                leave the bug.

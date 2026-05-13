@@ -124,5 +124,17 @@ Also set up a reusable animation system for future features:
 - When the player gives the wrong order, they will now receive 
   a penalty.  
 
+
+### v0.10.1 - 2026-05-12
+- Bug ID: #03 - Ordering Process Logic Errors (fixed)
+- When the player gives the wrong order, they will now receive 
+  a penalty.  
+  
 ### v0.11.0 - 2026-05-13
 - Music and SFX setting are added but UI are not pollish yet 
+
+### v0.12.0 - 2026-05-13
+- `PopupWindow.lua` is created. It can handle three type of popup for now.
+- Move all the GUI states from entity to GUI folder.
+- `constants.lua` get one more three more button form which one isn't used.
+- `InputBox.lua` is a new file that handle text input through SUIT library.
