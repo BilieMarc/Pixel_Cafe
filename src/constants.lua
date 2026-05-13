@@ -22,7 +22,7 @@ gColors = {
 gTexts = {
     ['DataLossAsk'] = 'You might lose your progress! Proceed?',
     ['Dev'] = 'Developer Tool',
-    ['NameGive'] = 'Click Ok Button to register Cafe Name!',
+    ['NameGive'] = 'Select the input box and press \'enter\' to register Cafe name!',
 }
 
 ANIMATION_DEFS = {

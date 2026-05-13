@@ -30,7 +30,30 @@ end
 
 function PopupWindow:update(dt)
     self:mouseResponse()
-    if self.type == 'Dev' or self.type == 'NameGive' then self.inputBox.update(dt) end
+    local name, tokens
+    if self.type == 'NameGive' then
+        name, tokens = self.inputBox.update(dt)
+        if name then
+            DataManager:getDefaultData()
+            DataManager:nameDataSave(name)
+            print(DataManager:getData('name'))
+            gStateStack:clear()
+            gStateStack:popupDelete()
+            gStateStack:clear()
+            gStateStack:push(PlayState())
+        end
+    elseif self.type == 'Dev' then
+        name, tokens = self.inputBox.update(dt)
+        if tokens and string.lower(tostring(tokens[1])) == '\\dev' then
+            if string.lower(tostring(tokens[2])) == 'skip' and tokens[3] then
+                DataManager:modify('currentDate', tonumber(tokens[3]))
+                gStateStack:clear()
+                gStateStack:push(DayEndState())
+            elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
+                gMoney = tonumber(tokens[3])
+            end
+        end
+    end
 end
 
 function PopupWindow:render()

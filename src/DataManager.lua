@@ -22,6 +22,7 @@ function DataManager:getDefaultData()
         ['unlockedMachine'] = {
             'CoffeeMachine',
         },
+        ['name'] = 'None',
     }
 end
 
@@ -47,6 +48,10 @@ end
 
 function DataManager:dateDataSave(currentDate)
     self.data['currentDate'] = currentDate
+end
+
+function DataManager:nameDataSave(name)
+    self.data['name'] = name
 end
 
 function DataManager:getData(requestedData)

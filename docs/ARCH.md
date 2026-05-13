@@ -15,6 +15,7 @@ src/
 - constants.lua
 - DataManager.lua
 - Dependencies.lua
+- InputBox.lua
 src/libs
 - SUIT
 - class.lua
@@ -28,6 +29,7 @@ src/states/game
 - PlayState.lua 
 - DayEndState.lua
 - PauseMenu.lua
+- PopupWindow.lua
 - StartMenu.lua
 src/states/entity
 - BaseEntity.lua
@@ -38,13 +40,15 @@ src/states/entity
 - Cursor.lua
 - CustomerState.lua
 - CustomerManager.lua
-- DayEndStateCard.lua
 - OrderBox.lua
 - FloatingMoney.lua
-- PauseMenuCard.lua
 - SandwichPlate.lua
-- StartMenuBackground.lua
 - TimeManager.lua
+src/states/GUI
+- StartMenuBackground.lua
+- PauseMenuCard.lua
+- DayEndStateCard.lua
+- PopupWindowCard.lua
 
 ## Core Systems
 

@@ -118,3 +118,9 @@ Also set up a reusable animation system for future features:
 - Update the frame each second based on time progress (from 1 to total pictures)
 - Start animation by resetting to frame 1, stop and reset after duration or when done
 - Copy this pattern to animate other things like machines or characters
+
+### v0.12.0 - 2026-05-13
+- `PopupWindow.lua` is created. It can handle three type of popup for now.
+- Move all the GUI states from entity to GUI folder.
+- `constants.lua` get one more three more button form which one isn't used.
+- `InputBox.lua` is a new file that handle text input through SUIT library.

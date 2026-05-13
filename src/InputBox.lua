@@ -37,14 +37,19 @@ function inputBox.update(dt)
         POPUP_INPUT_BOX.desired_height
     )
 
-    if not state.submitted then return end
+    if state.submitted then 
+        local raw = inputBox.input.text
 
-    local raw = inputBox.input.text
-    inputBox.input.text = ''
-    if raw == '' then return end
+        inputBox.input.text = '' 
 
-    local tokens = {}
-    for token in raw:gmatch("%S+") do table.insert(tokens, token) end
+        if raw == '' then return end
+
+        local tokens = {}
+        for token in raw:gmatch("%S+") do 
+            table.insert(tokens, token) 
+        end
+        return raw, tokens
+    end
 end
 
 function inputBox.draw() suit.draw() end
