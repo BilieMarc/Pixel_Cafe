@@ -48,6 +48,9 @@ end
 
 function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
+    if key == 'k' and not gStateStack.isPopup then
+        InputBox.ignoreNextK = true
+    end
     InputBox.keypressed(key)
 end
 
@@ -79,4 +82,10 @@ function love.mouse.wasReleased(button)
     return love.mouse.keysReleased[button]
 end
 
-function love.textinput(t) InputBox.textinput(t) end
+function love.textinput(t) 
+    if InputBox.ignoreNextK and t == 'k' then
+        InputBox.ignoreNextK = false
+        return
+    end
+    InputBox.textinput(t) 
+end

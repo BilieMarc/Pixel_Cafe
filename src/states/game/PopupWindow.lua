@@ -24,6 +24,7 @@ function PopupWindow:init(type)
         table.insert(self.interactables, self.okButton)
         gStateStack:push(self.okButton)]]
         self.inputBox = InputBox
+        self.inputBox.clear()
         suit.setHit('inputBox')
     end
 end
@@ -46,11 +47,31 @@ function PopupWindow:update(dt)
         name, tokens = self.inputBox.update(dt)
         if tokens and string.lower(tostring(tokens[1])) == '\\dev' then
             if string.lower(tostring(tokens[2])) == 'skip' and tokens[3] then
-                DataManager:modify('currentDate', tonumber(tokens[3]))
-                gStateStack:clear()
-                gStateStack:push(DayEndState())
+                local targetDay = tonumber(tokens[3])
+                if targetDay then
+                    DataManager:modify('currentDate', targetDay - 1)
+                    DataManager:ensureUnlocks(targetDay - 1)
+                    -- Clear popup table first, then delete popup status, then clear main states
+                    gStateStack:clear()
+                    gStateStack:popupDelete()
+                    gStateStack:clear()
+                    gStateStack:push(DayEndState())
+                end
             elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
-                gMoney = tonumber(tokens[3])
+                local amount = tonumber(tokens[3]) or 0
+                gMoney = (gMoney or 0) + amount
+                -- Sync with MoneyManager in base states if present
+                for _, state in ipairs(gStateStack.states) do
+                    if state.totalMoney then
+                        state.totalMoney = state.totalMoney + amount
+                        if state.displayMoney then
+                            state.displayMoney = state.totalMoney
+                        end
+                    end
+                end
+                -- Close the console after executing the command
+                gStateStack:clear()
+                gStateStack:popupDelete()
             end
         end
     end

@@ -143,3 +143,8 @@ Also set up a reusable animation system for future features:
 - CityBackground asset is taken from `https://free-game-assets.itch.io/free-pixel-art-street-backgrounds/download/eyJpZCI6MzQ2NjkxLCJleHBpcmVzIjoxNzc4NjcxOTQ0fQ%3d%3d%2e%2bCG3Z1ok6utuOLq7oZYJmqmOC3E%3d`
 - CounterBackground is self-drawn.
 - CustomerManager is push to gStateStack between City and Counter backgrounds.
+
+### v0.13.1 - 2026-05-14
+- Bug ID: #05 - Developer Command (fixed)
+- Developer can now skip to a next day using '\dev skip <number>' command in PlayState.
+- Developer can now add money using '\dev money <number>' command in PlayState.

@@ -20,14 +20,14 @@ local inputBox = {
     border = gColors['black'],
 }]]
 
-local once = true
+function inputBox.clear()
+    inputBox.input.text = ""
+    suit.textinput("")
+    suit.keypressed(nil)
+end
 
 function inputBox.update(dt)
     --suit.active = 'inputBox'
-    if inputBox.input.text == 'k' and once then
-        inputBox.input.text = ''
-        once = false
-    end
     local state = suit.Input(
         inputBox.input,
         { id = 'inputBox' },
