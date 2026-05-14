@@ -13,49 +13,71 @@ function CoffeeTray:init(params)
 end
 
 function CoffeeTray:updateFrame()
-    if self.filledCups > 0 then
-        -- Wait, if it has 4 filled cups, it's TrayWithCupsFilled1.
-        -- Let's stick to the prompt:
-        -- Drag CoffeeMachine to TrayWithEmptyCups4 -> becomes TrayWithCupsFilled1
-        -- Drag from TrayWithCupsFilled1 -> becomes TrayWithCupsFilled2
-        -- Drag from TrayWithCupsFilled2 -> becomes TrayWithCupsFilled3
-        -- Drag from TrayWithCupsFilled3 -> becomes TrayWithCupsFilled4
-        -- Drag from TrayWithCupsFilled4 -> becomes EmptyTray
-        if self.filledCups == 4 then
-            self.frame = gFrames['TrayWithCupsFilled1']
-        elseif self.filledCups == 3 then
-            self.frame = gFrames['TrayWithCupsFilled2']
-        elseif self.filledCups == 2 then
-            self.frame = gFrames['TrayWithCupsFilled3']
-        elseif self.filledCups == 1 then
-            self.frame = gFrames['TrayWithCupsFilled4']
+    local filled = self.filledCups
+    local empty  = self.emptyCups
+    local total  = filled + empty
+
+    if total == 0 then
+        self.frame = gFrames['EmptyTray']
+
+    elseif total == 1 then
+        if filled == 1 then
+            self.frame = gFrames['TrayWithCupsFilled4']   -- 1/1 filled
+        else
+            self.frame = gFrames['TrayWithEmptyCups1']    -- 1 empty
         end
-    else
-        if self.emptyCups == 0 then
-            self.frame = gFrames['EmptyTray']
-        elseif self.emptyCups == 1 then
-            self.frame = gFrames['TrayWithEmptyCups1']
-        elseif self.emptyCups == 2 then
-            self.frame = gFrames['TrayWithEmptyCups2']
-        elseif self.emptyCups == 3 then
-            self.frame = gFrames['TrayWithEmptyCups3']
-        elseif self.emptyCups == 4 then
-            self.frame = gFrames['TrayWithEmptyCups4']
+
+    elseif total == 2 then
+        if filled == 2 then
+            self.frame = gFrames['TrayWithCupsFilled3']   -- 2/2 filled
+        elseif filled == 1 then
+            self.frame = gFrames['TwoCupsFillStage1by2']  -- 1/2 filled
+        else
+            self.frame = gFrames['TrayWithEmptyCups2']    -- 2 empty
+        end
+
+    elseif total == 3 then
+        if filled == 3 then
+            self.frame = gFrames['TrayWithCupsFilled2']     -- 3/3 filled
+        elseif filled == 2 then
+            self.frame = gFrames['ThreeCupsFillStage2by3'] -- 2/3 filled
+        elseif filled == 1 then
+            self.frame = gFrames['ThreeCupsFillStage1by3'] -- 1/3 filled
+        else
+            self.frame = gFrames['TrayWithEmptyCups3']      -- 3 empty
+        end
+
+    elseif total >= 4 then
+        if filled == 4 then
+            self.frame = gFrames['TrayWithCupsFilled1']    -- 4/4 filled
+        elseif filled == 3 then
+            self.frame = gFrames['FourCupFillStage3by4']   -- 3/4 filled
+        elseif filled == 2 then
+            self.frame = gFrames['FourCupFillStage2by4']   -- 2/4 filled
+        elseif filled == 1 then
+            self.frame = gFrames['FourCupFillStage1by4']   -- 1/4 filled
+        else
+            self.frame = gFrames['TrayWithEmptyCups4']     -- 4 empty
         end
     end
 end
 
-function CoffeeTray:receiveItem(item)
+
+function CoffeeTray:receiveItem(item, source)
     if item == 'DisposableCoffeeCup' then
-        if self.emptyCups < 4 and self.filledCups == 0 then
+        local total = self.emptyCups + self.filledCups
+        if total < 4 then
             self.emptyCups = self.emptyCups + 1
             self:updateFrame()
             return true
         end
-    elseif item == 'CoffeeMachine' then
-        if self.emptyCups == 4 then
-            self.emptyCups = 0
-            self.filledCups = 4
+    elseif item == 'CoffeeMachine' and source then
+        local cupsToFill = math.min(self.emptyCups, source.volume)
+        if cupsToFill > 0 then
+            self.emptyCups = self.emptyCups - cupsToFill
+            self.filledCups = self.filledCups + cupsToFill
+            source.volume = source.volume - cupsToFill
+            source:updateFrame()
             self:updateFrame()
             return true
         end

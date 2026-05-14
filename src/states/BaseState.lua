@@ -61,13 +61,11 @@ function BaseState:mouseResponse()
                         allowDrag = false
                     end
                 elseif target.type == 'CoffeeCupStack' and self.coffeeTray then
-                    if self.coffeeTray.filledCups > 0 or self.coffeeTray.emptyCups == 4 then
+                    local total = self.coffeeTray.emptyCups + self.coffeeTray.filledCups
+                    if total >= 4 then
                         allowDrag = false
                     end
-                elseif target.type == 'CoffeeMachine' and self.coffeeTray then
-                    if self.coffeeTray.emptyCups < 4 then
-                        allowDrag = false
-                    end
+                -- CoffeeMachine: always allow drag when Ready (pouring nothing is fine)
                 elseif target.type == 'CoffeeTray' then
                     if target.filledCups == 0 then
                         allowDrag = false
@@ -124,8 +122,12 @@ function BaseState:mouseResponse()
                 if dt <= 0.2 and dist2 <= (5 * 5) then --if the time and distance are under threshold
                     local target = self._mouseDown.target
                     if target then --target is not dragged but clicked
-                        if target.isMachine and target.productionStage == 'Void' then
-                            target:produce()
+                        if target.isMachine then
+                            if target.type == 'CoffeeMachine' then
+                                target:produce()
+                            elseif target.productionStage == 'Void' then
+                                target:produce()
+                            end
                         elseif target.isClicker and target.productionStage ~= 'Void' then
                             target:action()
                         elseif target.isGUI then

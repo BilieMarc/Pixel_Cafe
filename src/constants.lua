@@ -29,14 +29,17 @@ ANIMATION_DEFS = {
     CoffeeMachine = {
         frames = gFrames['CoffeeMachineAnimation'],
         speed = 0.5,
-        loop = true,
+        loop = false,   -- must NOT loop: prevents frame-1 flash when starting mid-animation
         activate = function(owner)
-            return owner.productionStage == 'Producing'
+            -- also check finished so the animation never restarts itself after
+            -- naturally reaching the last frame while the brew timer is still running
+            return owner.productionStage == 'Producing' and not owner.animation.finished
         end,
         defaultFrame = gFrames['CoffeeMachineAnimation'][1],
         holdFrameWhenInactive = true,
     },
 }
+
 
 COFFEE_MACHINE_ENTITY = {
     frame = gFrames['CoffeeMachineAnimation'][1], -- default frame when idle
