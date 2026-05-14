@@ -86,7 +86,7 @@ function BaseState:mouseResponse()
                     elseif self.cursor and self.cursor.heldItem == 'Sandwich' and self.sandwichPlate then
                         self.sandwichPlate:taken()
                     end
-                elseif target.type == 'BreadPlate' and (target.productionStage == 'Void' or (target.loafRemaining == 0 and target.slices == 0)) then
+                elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
                     self:deliverItem(target)
                 elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
                     self:deliverItem(target)

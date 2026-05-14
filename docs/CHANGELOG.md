@@ -138,3 +138,6 @@ Also set up a reusable animation system for future features:
 - Move all the GUI states from entity to GUI folder.
 - `constants.lua` get one more three more button form which one isn't used.
 - `InputBox.lua` is a new file that handle text input through SUIT library.
+
+### v0.12.1 - 2026-05-14
+- Bug ID: #04 - Plate State Conflict (Loaf vs. Slice) (fixed)  
