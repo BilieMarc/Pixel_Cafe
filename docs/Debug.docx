@@ -74,9 +74,9 @@ Actual Result:  The Loaf cannot be dragged/placed, effectively "locking" the pla
 Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.            
 
 Bug ID: #05 - Developer Command
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Luaegyigyi
 Description: Although the PopupWindow is added, the developer function is so buggy it isn't recommended for use yet.
 Steps to Reproduce:
      Start the game and press k at any game state.

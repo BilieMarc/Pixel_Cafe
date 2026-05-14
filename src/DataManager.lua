@@ -58,9 +58,9 @@ function DataManager:getData(requestedData)
     if requestedData then
         if type(requestedData) == "table" then
             local returnData = {}
-            for i, v in requestedData do
-                if self.data[requestedData[i]] ~= nil then
-                    table.insert(returnData, self.data)
+            for i, key in ipairs(requestedData) do
+                if self.data[key] ~= nil then
+                    returnData[key] = self.data[key]
                 end
             end
             return returnData
@@ -82,17 +82,35 @@ local dateDependentUnlock = {
     'SandwichPlate',
 }
 
-function DataManager:autoUnlockMachine()
-    local machine = dateDependentUnlock[self.data['currentDate']]
+function DataManager:autoUnlockMachine(day)
+    local targetDay = day or self.data['currentDate']
+    local machine = dateDependentUnlock[targetDay]
     print('Unlocked Machine:' .. tostring(machine))
     if machine then
-        table.insert(self.data['unlockedMachine'], machine)
+        -- Check if already unlocked to avoid duplicates
+        local alreadyUnlocked = false
+        for _, m in ipairs(self.data['unlockedMachine']) do
+            if m == machine then
+                alreadyUnlocked = true
+                break
+            end
+        end
+        
+        if not alreadyUnlocked then
+            table.insert(self.data['unlockedMachine'], machine)
+        end
+    end
+end
+
+function DataManager:ensureUnlocks(targetDay)
+    for i = 1, targetDay do
+        self:autoUnlockMachine(i)
     end
 end
 
 function DataManager:modify(variable, value)
     if self.data[variable] ~= nil then
-        self.data['variable'] = value
+        self.data[variable] = value
     end
 end
 
