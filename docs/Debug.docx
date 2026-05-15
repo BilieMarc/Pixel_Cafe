@@ -99,3 +99,16 @@ Steps to Reproduce:
      Restart the game and press play.
 Expected Result: Day 2. So, loaf should be unlocked.
 Actual Result:  Missing.
+
+Bug ID: #07 - Exit Button Invisible
+Status: Resolved
+Reporter: Kyaw Sis Thway
+Debugger: Kyaw Sis Thway
+Description: To Shop button's position is the same as From Shop button's position. So I can click it on guess.
+                But From Shop button is not visible.
+Steps to Reproduce:
+     Start the game.
+     Click To Shop button.
+     Look at the red box at the top.
+Expected Result: There should be From Shop button to exit.
+Actual Result:  You can still click it. But visually, it is missing.

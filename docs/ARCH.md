@@ -56,6 +56,7 @@ src/states/GUI
 - CityBackground.lua
 - CounterBackground.lua
 - ShopBackground.lua
+- ShopTopBox.lua
 
 ## Core Systems
 

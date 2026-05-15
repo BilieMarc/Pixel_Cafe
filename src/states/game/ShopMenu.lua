@@ -27,16 +27,13 @@ function ShopMenu:init()
     self.background = ShopBackground()
     gStateStack:push(self.background)
 
-    self.exitButton = Button(BUTTON_PARAMS['FromShop'])
-    gStateStack:push(self.exitButton)
-
     self.scrollbar = Scrollbar(SCROLLBAR_CONFIG)
     gStateStack:push(self.scrollbar)
 
     self.indexY = 0
     self.items = {}
     self.buttons = {}
-    self.interactables = { self.exitButton, self.scrollbar }
+    self.interactables = { self.scrollbar }
 
     local i = 1
     for name, data in pairs(items) do
@@ -49,6 +46,13 @@ function ShopMenu:init()
         table.insert(self.interactables, self.buttons[i])
         i = i + 1
     end
+
+    self.topBox = ShopTopBox()
+    gStateStack:push(self.topBox)
+
+    self.exitButton = Button(BUTTON_PARAMS['FromShop'])
+    gStateStack:push(self.exitButton)
+    table.insert(self.interactables, self.exitButton)
 end
 
 function ShopMenu:update(dt)
@@ -72,7 +76,4 @@ function ShopMenu:update(dt)
 end
 
 function ShopMenu:render()
-    love.graphics.setColor(gColors['red'])
-    love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, 20)
-    love.graphics.setColor(gColors['white'])
 end
