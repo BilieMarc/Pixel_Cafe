@@ -166,3 +166,8 @@ Also set up a reusable animation system for future features:
 - The problem is that the red box is drawn in ShopMenu which cover the render of Button. Originally, it was done
 so to cover the item logs.
 - Now, ShopMenu has two background rendering files.
+
+### v0.14.2 - 2026-05-15
+- DayEndstate transition is changed from 'resume' to 'clear and push'
+- Last call transition is changed from 'force exit all' to 'stop spawning'
+

@@ -44,7 +44,7 @@ function PlayState:init()
     self.moneyManager    = MoneyManager(self.data['totalMoney'], self.data['todayMoney'])
     gStateStack:push(self.moneyManager)
 
-    self.timeManager     = TimeManager(self.data['currentDate'])
+    self.timeManager     = TimeManager(self.data['currentDate'], self.customerManager)
     gStateStack:push(self.timeManager)
 
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])

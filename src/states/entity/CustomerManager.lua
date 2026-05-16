@@ -15,16 +15,19 @@ function CustomerManager:init()
     for i = 1, #WAITING_SLOTS do
         self.occupiedSlots[i] = false
     end
+
+    self.spawningEnabled = true
 end
 
 function CustomerManager:update(dt)
-    -- Advance spawn timer
-    self.spawnTimer = self.spawnTimer + dt
-    if self.spawnTimer >= self.nextSpawnTime then
-        self:spawnCustomer()
-        self.spawnTimer    = 0
-        -- Add ±0.5 s of jitter so arrivals feel natural
-        self.nextSpawnTime = CUSTOMER_CONFIG.spawnInterval + (math.random() - 0.5)
+    if self.spawningEnabled then
+        self.spawnTimer = self.spawnTimer + dt
+        if self.spawnTimer >= self.nextSpawnTime then
+            self:spawnCustomer()
+            self.spawnTimer    = 0
+            -- Add ±0.5 s of jitter so arrivals feel natural
+            self.nextSpawnTime = CUSTOMER_CONFIG.spawnInterval + (math.random() - 0.5)
+        end
     end
 
     -- Remove customers that have fully exited (state == 'done')
@@ -81,6 +84,20 @@ function CustomerManager:getOccupiedSlotCount()
         if self.occupiedSlots[i] then n = n + 1 end
     end
     return n
+end
+
+function CustomerManager:forceExitAll()
+    for _, c in ipairs(self.customers) do
+        c:leave()
+    end
+end
+
+function CustomerManager:isEmpty()
+    return #self.customers == 0
+end
+
+function CustomerManager:stopSpawning()
+    self.spawningEnabled = false
 end
 
 function CustomerManager:render()

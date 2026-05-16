@@ -1,6 +1,6 @@
 TimeManager = class{__includes = BaseEntity}
 
-function TimeManager:init(currentDate)
+function TimeManager:init(currentDate, customerManager)
     -- Default to start hour 8 (8:00 AM)
     self.dayTime = 8 * 60
     
@@ -8,17 +8,27 @@ function TimeManager:init(currentDate)
     self.timeScale = 15
 
     self.currentDate = currentDate
+    self.customerManager = customerManager
+    self.isFrozen = false
 end
 
 function TimeManager:update(dt)
-    self.dayTime = self.dayTime + self.timeScale * dt
+    if not self.isFrozen then
+        self.dayTime = self.dayTime + self.timeScale * dt
+    end
     local currentHour = math.floor(self.dayTime / 60)
     
     -- Night time transition (8:00 PM / 20 hours)
-    if currentHour >= 20 then
+    if currentHour >= 20 and not self.isFrozen then
         DataManager:dateDataSave(self.currentDate)
-        gStateStack:clear()
-        gStateStack:push(DayEndState())
+        self.dayTime = 20 * 60
+        self.isFrozen = true
+        
+        if self.customerManager then
+            self.customerManager:stopSpawning()
+        end
+        
+        gStateStack:push(ClosingState(self.customerManager))
     end
 end
 
