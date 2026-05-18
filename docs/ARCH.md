@@ -3,7 +3,7 @@
 ## Tech Stack
 - Language: Lua
 - Engine: LÖVE2D
-- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson
+- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson, Animation, Util
 
 ## Project Structure
 - main.lua
@@ -17,12 +17,14 @@
 - Dependencies.lua
 - InputBox.lua
 ### src/libs
+- Animation.lua
 - SUIT
 - class.lua
 - dkjson.lua
 - push.lua
 - StateMachine.lua
 - StateStack.lua
+- Util.lua
 ### src/states
 - BaseState.lua
 ### src/states/game
