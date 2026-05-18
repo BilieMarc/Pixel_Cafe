@@ -3,29 +3,31 @@
 ## Tech Stack
 - Language: Lua
 - Engine: LÖVE2D
-- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson
+- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson, Animation, Util
 
 ## Project Structure
 - main.lua
 - .gitignore
 - .gitmodules
 - README.md
-src/
+### src/
 - Animation.lua
 - constants.lua
 - DataManager.lua
 - Dependencies.lua
 - InputBox.lua
-src/libs
+### src/libs
+- Animation.lua
 - SUIT
 - class.lua
 - dkjson.lua
 - push.lua
 - StateMachine.lua
 - StateStack.lua
-src/states
+- Util.lua
+### src/states
 - BaseState.lua
-src/states/game
+### src/states/game
 - PlayState.lua 
 - DayEndState.lua
 - PauseMenu.lua
@@ -33,7 +35,7 @@ src/states/game
 - SettingState.lua
 - ShopMenu.lua
 - StartMenu.lua
-src/states/entity
+### src/states/entity
 - BaseEntity.lua
 - BreadBasket.lua
 - BreadPlate.lua
@@ -48,7 +50,7 @@ src/states/entity
 - Scrollbar.lua
 - ShopItem.lua
 - TimeManager.lua
-src/states/GUI
+### src/states/GUI
 - StartMenuBackground.lua
 - PauseMenuCard.lua
 - DayEndStateCard.lua

@@ -6,6 +6,8 @@ require('src.libs.StateMachine')
 require('src.libs.StateStack')
 _G.suit  = require('src.libs.SUIT')
 _G.json = require('src.libs.dkjson')
+require('src.libs.Util')
+require('src.libs.Animation')
 
 gFonts = {
     ['large']  = love.graphics.newFont('assets/font.ttf', 32),
@@ -17,7 +19,24 @@ gFrames = {
     ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
-        love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
+        ['Headless'] = {
+            ['walk'] = {love.graphics.newImage('assets/CustomerHeadless/customerHeadless1.png'),
+            love.graphics.newImage('assets/CustomerHeadless/customerHeadless2.png'),},
+            ['idle'] = {love.graphics.newImage('assets/CustomerHeadless/customerHeadless3.png'),
+            love.graphics.newImage('assets/CustomerHeadless/customerHeadless4.png'),},
+        },
+        ['LegLady'] = {
+            ['walk'] = {love.graphics.newImage('assets/CustomerLegLady/LegLady1.png'), -- Leg Lady
+            love.graphics.newImage('assets/CustomerLegLady/LegLady2.png'),},
+            ['idle'] = {love.graphics.newImage('assets/CustomerLegLady/LegLady3.png'),
+            love.graphics.newImage('assets/CustomerLegLady/LegLady4.png'),},
+        },
+        ['ArmEater'] = {
+            ['walk'] = {love.graphics.newImage('assets/CustomerArmEater/customerArmEater1.png'), -- Arm Eater
+            love.graphics.newImage('assets/CustomerArmEater/customerArmEater2.png'),},
+            ['idle'] = {love.graphics.newImage('assets/CustomerArmEater/customerArmEater3.png'),
+            love.graphics.newImage('assets/CustomerArmEater/customerArmEater4.png'),},
+        },
     },
     ['Coffee'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png'),
     ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
@@ -56,7 +75,15 @@ for i = 1, 11 do
 end
 gFrames['CoffeeMachineHold'] = love.graphics.newImage('assets/CoffeeMachineAnimation/CoffeeMachineHold.png')
 
+--[[ Example layout for a horizontal strip sheet asset
+local scavengerAtlas = love.graphics.newImage('assets/CustomerScavenger/scavenger_strip.png')
+local scavengerQuads = GenerateQuads(scavengerAtlas, 64, 64) -- Width/Height per frame
 
+gFrames.customers['Scavenger'] = {
+    texture = scavengerAtlas, -- Saved for the BaseEntity render lookup
+    ['walk'] = { scavengerQuads[1], scavengerQuads[2] },
+    ['idle'] = { scavengerQuads[3], scavengerQuads[4] }
+}]]
 
 -- CoffeeMachine fill stage frames: 4=full jar (4/4), 1=almost empty (1/4)
 gFrames['CoffeeMachinesFillStages4'] = love.graphics.newImage('assets/Fill stages/CoffeeMachinesFillStages4.png')
@@ -72,7 +99,7 @@ gFrames['CoffeeJarVolume3by4'] = love.graphics.newImage('assets/JarVolumeStages/
 gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png')
 
 
-require('src.Animation')
+--require('src.Animation')
 DataManager = require('src.DataManager')
 require('src.constants')
 InputBox = require('src.InputBox')

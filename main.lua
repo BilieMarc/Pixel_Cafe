@@ -1,15 +1,17 @@
+love.graphics.setDefaultFilter('nearest', 'nearest')
+
 require('src.Dependencies')
 
 function love.load()
     math.randomseed(os.time())
     love.window.setTitle('Pixel Cafe')
     --love.window.setIcon(gLogo)
-    love.graphics.setDefaultFilter('nearest', 'nearest')
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         vsync = true,
-        resizable = false
+        resizable = false,
+        filter = 'nearest',
     })
 
 -- start the game with StartMenu 

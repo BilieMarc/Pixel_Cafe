@@ -1,11 +1,39 @@
 CustomerState = class{__includes = BaseEntity}
 
+local function randomChoice(list)
+    return list[math.random(#list)]
+end
+
+local animate = function(self, animationState)
+    if self.animationState ~= animationState then
+        self.animationState = animationState
+        
+        local def = ANIMATION_DEFS.getCustomerAnimationDef(self.customerType, self.animationState)
+        self.animation = Animation(def)
+        
+        -- If using a spritesheet texture, explicitly let the entity store it
+        if def.texture then
+            self.texture = def.texture
+        end
+    end
+    return self.animation
+end
+
 function CustomerState:init(params)
     BaseEntity.init(self, params)
     self.type = 'CustomerState'
+    self.customerType = randomChoice{
+        'LegLady',
+        'ArmEater',
+        'Headless',
+    }
+    
     -- Appearance
-    local frameIndex  = math.random(#gFrames.customers)
-    self.frame        = gFrames.customers[frameIndex]
+    self.animation = animate(self, 'idle')
+    
+    -- FIXED: Changed getFrame() to getCurrentFrame() with an explicit asset fallback
+    self.frame = (self.animation and self.animation:getCurrentFrame()) or gFrames.customers[self.customerType]
+    
     self.desired_width  = 64
     self.desired_height = 64
 
@@ -19,11 +47,6 @@ function CustomerState:init(params)
     self.state      = 'moving_in'
     self.stateTimer = 0
 
-    -- Order
-    --self.orderType = params.orderType or 'Coffee'
-    --self.order     = ORDER_TYPES[self.orderType]   -- {price, name}
-    self.orderBox  = nil
-
     -- Payment
     self.patienceAtPayment = CUSTOMER_CONFIG.patienceMax
     self.totalPayment      = 0
@@ -35,12 +58,23 @@ end
 -- ─── Main update dispatcher ───────────────────────────────────────────────────
 
 function CustomerState:update(dt)
+    if self.animation then
+        -- FIXED: GD50 animation update only requires 'dt'
+        self.animation:update(dt)
+        
+        -- FIXED: Changed getFrame() to getCurrentFrame()
+        local frame = self.animation:getCurrentFrame()
+        if frame then
+            self.frame = frame
+        end
+    end
+    
+    -- State updates remain exactly the same
     if     self.state == 'moving_in' then self:updateMovingIn(dt)
     elseif self.state == 'waiting'   then self:updateWaiting(dt)
     elseif self.state == 'paying'    then self:updatePaying(dt)
     elseif self.state == 'leaving'   then self:updateLeaving(dt)
     end
-    -- 'done' state: no-op; CustomerManager removes the customer next frame
 end
 
 -- ─── Per-state update functions ───────────────────────────────────────────────
@@ -55,6 +89,7 @@ function CustomerState:updateMovingIn(dt)
         local dir = distance > 0 and 1 or -1
         self.x = self.x + dir * CUSTOMER_CONFIG.moveSpeed * dt
     end
+    animate(self, 'walk')
 end
 
 function CustomerState:updateWaiting(dt)
@@ -69,6 +104,7 @@ function CustomerState:updateWaiting(dt)
     if self.orderBox.isActive then
         self.orderBox:update(dt)
     end
+    animate(self, 'idle')
 end
 
 function CustomerState:updatePaying(dt)
@@ -77,6 +113,7 @@ function CustomerState:updatePaying(dt)
     if self.stateTimer >= 0.5 then
         self:setState('leaving')
     end
+    animate(self, 'idle')
 end
 
 function CustomerState:updateLeaving(dt)
@@ -86,6 +123,7 @@ function CustomerState:updateLeaving(dt)
         local dir = (EXIT_X - self.x) > 0 and 1 or -1
         self.x = self.x + dir * CUSTOMER_CONFIG.moveSpeed * dt
     end
+    animate(self, 'walk')
 end
 
 -- ─── Render ───────────────────────────────────────────────────────────────────

@@ -20,7 +20,8 @@ end
 
 function CoffeeMachine:updateFrame()
     if self.productionStage == 'Producing' then
-        self.frame = self.animation:getFrame() or self.frame
+        -- FIXED: Changed getFrame() to getCurrentFrame()
+        self.frame = (self.animation and self.animation:getCurrentFrame()) or self.frame
     elseif self.productionStage == 'Holding' then
         self.frame = gFrames['CoffeeMachineHold']
     else
@@ -37,7 +38,6 @@ function CoffeeMachine:updateFrame()
         end
     end
 end
-
 
 function CoffeeMachine:getHitbox()
     local scale = 0.7 -- Reduce width by 30%
@@ -57,19 +57,24 @@ end
 function CoffeeMachine:update(dt)
     if self.productionStage == 'Producing' then
         self.counter = self.counter + dt
+        
+        if self.animation then 
+            self.animation:update(dt) 
+        end
+
         if self.counter >= self.duration then
             self.productionStage = 'Ready'
             self.volume = 4
             self.counter = 0
-            self.animation:stop()
-            self:showBubble(gColors['brown'])
+            
+            -- FIXED: Use refresh() instead of stop() to park the animation back at frame 1
+            if self.animation then
+                self.animation:refresh()
+            end
         end
     end
 
     BaseEntity.update(self, dt)
-
-    -- Re-apply correct frame after BaseEntity.update, since the animation system
-    -- may have overwritten self.frame with nil when the animation is stopped.
     self:updateFrame()
 end
 
@@ -89,19 +94,21 @@ function CoffeeMachine:produce()
         self.duration = (4 - self.volume) * 1.25
         self.productionStage = 'Producing'
         self.counter = 0
-        self.animation:play()
+        
+        -- FIXED: Use refresh() instead of play() to reset the GD50 animation
+        if self.animation then
+            self.animation:refresh()
 
-        -- Start animation at the frame matching current volume so it blends
-        -- smoothly instead of always jumping back to frame 1.
-        local volumeToFrame = { [0]=1, [1]=5, [2]=7, [3]=10 }
-        local startIndex = volumeToFrame[self.volume] or 1
-        self.animation.frameIndex = startIndex
-        self.animation.timer = 0
-        self.animation.frame = self.animation.frames[startIndex] or self.animation.defaultFrame
+            -- Start animation at the frame matching current volume so it blends smoothly
+            local volumeToFrame = { [0]=1, [1]=5, [2]=7, [3]=10 }
+            local startIndex = volumeToFrame[self.volume] or 1
+            
+            -- FIXED: Changed frameIndex to currentFrame for GD50 compatibility
+            self.animation.currentFrame = startIndex
+            self.animation.timer = 0
+        end
     end
 end
-
-
 
 function CoffeeMachine:drag()
     self.productionStage = 'Holding'
