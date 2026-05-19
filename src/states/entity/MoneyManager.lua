@@ -87,12 +87,23 @@ function MoneyManager:update(dt)
 end
 
 function MoneyManager:render()
-    love.graphics.setColor(0.2, 0.8, 0.2, 1)
-    love.graphics.setFont(gFonts['medium'])
-    love.graphics.printf(
-        string.format('$%.2f', self.displayMoney),
-        VIRTUAL_WIDTH - 200, 2, 60, 'right'
-    )
+    love.graphics.setFont(gFonts['small'])
+
+    local moneyText = string.format('$%.2f', self.displayMoney)
+
+    local plateX = VIRTUAL_WIDTH - 80 - 4 - 52
+    local plateY = 2
+    local plateW = 52
+    local plateH = 12
+    local plateR = 3
+
+    love.graphics.setColor(0.12, 0.12, 0.18, 0.75)
+    love.graphics.rectangle('fill', plateX, plateY, plateW, plateH, plateR, plateR)
+    love.graphics.setColor(0.3, 0.3, 0.4, 0.5)
+    love.graphics.rectangle('line', plateX, plateY, plateW, plateH, plateR, plateR)
+
+    love.graphics.setColor(0.35, 0.9, 0.35, 1)
+    love.graphics.printf(moneyText, plateX, plateY + 2, plateW, 'center')
     love.graphics.setColor(1, 1, 1, 1)
 
     for _, m in ipairs(self.floatingMoney) do
