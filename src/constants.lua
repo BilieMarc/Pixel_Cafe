@@ -364,8 +364,8 @@ BUTTON_PARAMS = {
     },
     ['PopupX'] = {
         text = 'X',
-        x = POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width - 16 - 1, --16 is width and 1 is buffer
-        y = POPUP_WINDOW_CONFIG.y + 1, --1 is buffer
+        x = POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width - 16 - 1,
+        y = POPUP_WINDOW_CONFIG.y + 1,
         desired_width = 16,
         desired_height = 16,
         action = function()
@@ -378,8 +378,8 @@ BUTTON_PARAMS = {
     },
     ['OkButton'] = {
         text = 'OK',
-        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16), --16 is width / 2
-        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8), --8 is height / 2
+        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16),
+        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8),
         desired_width = 32,
         desired_height = 16,
         action = function()
@@ -398,8 +398,8 @@ BUTTON_PARAMS = {
     },
     ['OkNameGive'] = {
         text = 'OK',
-        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16), --16 is width / 2
-        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8), --8 is height / 2
+        x = math.floor(POPUP_WINDOW_CONFIG.x + POPUP_WINDOW_CONFIG.width / 2 - 16),
+        y = math.floor(POPUP_WINDOW_CONFIG.y + POPUP_WINDOW_CONFIG.height / 2 + 8),
         desired_width = 32,
         desired_height = 16,
         action = function()

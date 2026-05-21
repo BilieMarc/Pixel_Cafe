@@ -51,13 +51,23 @@ function TimeManager:render()
         displayHour = 12
     end
     
-    local timeString = string.format("%02d:%02d", displayHour, displayMinutes)
+    local timeString = string.format("%02d:%02d %s", displayHour, displayMinutes, period)
     
-    love.graphics.setFont(gFonts['medium'])
-    -- Render time string
-    love.graphics.print(timeString, VIRTUAL_WIDTH - 90, 2)
-    -- Render period separately to prevent moving right and left
-    love.graphics.print(period, VIRTUAL_WIDTH - 42, 2)
+    love.graphics.setFont(gFonts['small'])
+    
+    local plateX = VIRTUAL_WIDTH - 80
+    local plateY = 2
+    local plateW = 56
+    local plateH = 12
+    local plateR = 3
+
+    love.graphics.setColor(0.12, 0.12, 0.18, 0.75)
+    love.graphics.rectangle('fill', plateX, plateY, plateW, plateH, plateR, plateR)
+    love.graphics.setColor(0.3, 0.3, 0.4, 0.5)
+    love.graphics.rectangle('line', plateX, plateY, plateW, plateH, plateR, plateR)
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.printf(timeString, plateX, plateY + 2, plateW, 'center')
 end
 
 function TimeManager:devTimeSkip()

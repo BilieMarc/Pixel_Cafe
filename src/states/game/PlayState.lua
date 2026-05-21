@@ -14,6 +14,7 @@ function PlayState:init()
     self.interactables = {}
 
     self.data = DataManager:getData()
+    self.currentDate = self.data['currentDate'] or 1
     print('Current Date: ' .. tostring(self.data['currentDate']))
     print('PlayState - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
 
@@ -122,6 +123,29 @@ function PlayState:render()
     love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20,
                             VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)]]
+
+    self:renderDateHUD()
+end
+
+function PlayState:renderDateHUD()
+    love.graphics.setFont(gFonts['small'])
+
+    local dateText = 'Day ' .. tostring(self.currentDate)
+
+    local plateX = VIRTUAL_WIDTH - 80 - 4 - 52 - 4 - 42
+    local plateY = 2
+    local plateW = 42
+    local plateH = 12
+    local plateR = 3
+
+    love.graphics.setColor(0.12, 0.12, 0.18, 0.75)
+    love.graphics.rectangle('fill', plateX, plateY, plateW, plateH, plateR, plateR)
+    love.graphics.setColor(0.3, 0.3, 0.4, 0.5)
+    love.graphics.rectangle('line', plateX, plateY, plateW, plateH, plateR, plateR)
+
+    love.graphics.setColor(1, 0.85, 0.45, 1)
+    love.graphics.printf(dateText, plateX, plateY + 2, plateW, 'center')
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 function PlayState:deliverItem(target)
